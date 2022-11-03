@@ -34,7 +34,7 @@ struct InfiniteBackgroundView: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 VStack(spacing: -30) {
-                    ForEach((1...6), id: \.self) { i in
+                    ForEach((1...10), id: \.self) { i in
                         if i % 2 == 0 {
                             VStack(spacing: -(height/2+10)) {
                                 HStack(spacing: -30) {
@@ -62,7 +62,7 @@ struct InfiniteBackgroundView: View {
                                 }
                             }
                             .rotation3DEffect(.degrees(-180), axis: (x: 0, y: 1, z: 0))
-                            .offset(x: -130, y: 0)
+                            .offset(x: -130, y: 10)
                             .zIndex(Double(8-i))
                         } else {
                             VStack(spacing: -height/2) {
@@ -98,8 +98,8 @@ struct InfiniteBackgroundView: View {
             }
             .disabled(true)
             .onAppear() {
-                withAnimation(.linear(duration: 8).repeatForever(autoreverses: false)) {
-                    yOffset = -height/2
+                withAnimation(.linear(duration: 35).repeatForever(autoreverses: false)) {
+                    yOffset = -height*5.2
                 }
             }
         }

@@ -12,10 +12,7 @@ struct ContentView: View {
         ZStack {
             InfiniteBackgroundView()
             VStack {
-                Text("SketchPerfect")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
+                
             }
         }
     }
