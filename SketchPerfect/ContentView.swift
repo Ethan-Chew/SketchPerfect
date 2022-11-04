@@ -109,8 +109,11 @@ struct ContentView: View {
                     Spacer()
                 }
                 
-                DifficultySelectionView(presentView: $presentPlayView, frameWidth: geometry.size.width-100, frameHeight: (geometry.size.height/3)*2.7)
-                    .offset(x: playXOffset)
+                VStack {
+                    DifficultySelectionView(presentView: $presentPlayView, frameWidth: geometry.size.width-100, frameHeight: (geometry.size.height/3)*2.7)
+                        .offset(x: playXOffset)
+                    Spacer()
+                }
                 
                 StatisticsView(presentView: $presentStatisticsView, frameWidth: geometry.size.width-100, frameHeight: (geometry.size.height/3)*2.7)
                     .offset(x: statisticsXOffset)
