@@ -7,25 +7,6 @@
 
 import SwiftUI
 
-struct StrokeText: View {
-    let text: String
-    let width: CGFloat
-    let color: Color
-    
-    var body: some View {
-        ZStack {
-            ZStack{
-                Text(text).offset(x:  width, y:  width)
-                Text(text).offset(x: -width, y: -width)
-                Text(text).offset(x: -width, y:  width)
-                Text(text).offset(x:  width, y: -width)
-            }
-            .foregroundColor(color)
-            Text(text)
-        }
-    }
-}
-
 struct ContentView: View {
     // Control Entry/Exit of Views
     @State var presentPlayView = false
@@ -110,7 +91,7 @@ struct ContentView: View {
                 }
                 
                 VStack {
-                    DifficultySelectionView(presentView: $presentPlayView, frameWidth: geometry.size.width-100, frameHeight: (geometry.size.height/3)*2.7)
+                    DifficultySelectionView(presentView: $presentPlayView, frameWidth: geometry.size.width-100, frameHeight: (geometry.size.height/3)*2.7, selectedMode: "")
                         .offset(x: playXOffset)
                     Spacer()
                 }

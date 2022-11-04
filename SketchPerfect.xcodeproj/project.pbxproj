@@ -17,6 +17,8 @@
 		595B314D28D76D6100B3B631 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 595B314C28D76D6100B3B631 /* Assets.xcassets */; };
 		595B315028D76D6100B3B631 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 595B314F28D76D6100B3B631 /* Preview Assets.xcassets */; };
 		59856CE22914179C00FD7EBC /* InfBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59856CE12914179C00FD7EBC /* InfBackground.swift */; };
+		59A9941A2915184E003D617D /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A994192915184E003D617D /* UserData.swift */; };
+		59A9941D291518AE003D617D /* SelectedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A9941C291518AE003D617D /* SelectedGame.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		595B314F28D76D6100B3B631 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		595B315128D76D6100B3B631 /* SketchPerfect.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SketchPerfect.entitlements; sourceTree = "<group>"; };
 		59856CE12914179C00FD7EBC /* InfBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfBackground.swift; sourceTree = "<group>"; };
+		59A994192915184E003D617D /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		59A9941C291518AE003D617D /* SelectedGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedGame.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +53,7 @@
 			isa = PBXGroup;
 			children = (
 				591252E22914BF4A0080489E /* UserStatistics.swift */,
+				59A994192915184E003D617D /* UserData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -75,6 +80,7 @@
 				595B314828D76D5F00B3B631 /* SketchPerfectApp.swift */,
 				59856CE02914178700FD7EBC /* Views */,
 				591252E12914BF3B0080489E /* Models */,
+				59A9941B2915187C003D617D /* Structs */,
 				595B314C28D76D6100B3B631 /* Assets.xcassets */,
 				595B315128D76D6100B3B631 /* SketchPerfect.entitlements */,
 				595B314E28D76D6100B3B631 /* Preview Content */,
@@ -101,6 +107,14 @@
 				59856CE12914179C00FD7EBC /* InfBackground.swift */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		59A9941B2915187C003D617D /* Structs */ = {
+			isa = PBXGroup;
+			children = (
+				59A9941C291518AE003D617D /* SelectedGame.swift */,
+			);
+			path = Structs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,8 +190,10 @@
 				59856CE22914179C00FD7EBC /* InfBackground.swift in Sources */,
 				595B314B28D76D5F00B3B631 /* ContentView.swift in Sources */,
 				595B314928D76D5F00B3B631 /* SketchPerfectApp.swift in Sources */,
+				59A9941A2915184E003D617D /* UserData.swift in Sources */,
 				591252E02914BEF40080489E /* SettingsView.swift in Sources */,
 				591252DE2914BEDE0080489E /* DifficultySelectionView.swift in Sources */,
+				59A9941D291518AE003D617D /* SelectedGame.swift in Sources */,
 				591252E52914BF680080489E /* StatisticsView.swift in Sources */,
 				591252DC2914BEC50080489E /* DrawingView.swift in Sources */,
 				591252E32914BF4A0080489E /* UserStatistics.swift in Sources */,
@@ -237,6 +253,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -291,6 +308,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

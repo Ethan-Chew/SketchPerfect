@@ -12,6 +12,15 @@ struct DifficultySelectionView: View {
     let frameWidth: CGFloat
     let frameHeight:CGFloat
     
+    // Control Entry/Exit of Views
+    @State var presentChooseTimeView = false
+    var viewXOffset: CGFloat {
+        presentChooseTimeView ? 0 : -UIScreen.main.bounds.width
+    }
+    
+    // Variables
+    @State var selectedMode: String
+    
     var body: some View {
         ZStack {
             // Top Header
@@ -68,7 +77,8 @@ struct DifficultySelectionView: View {
                         .padding(.top, 40)
                         
                         Button {
-                            
+                            selectedMode = "Easy"
+                            withAnimation { presentChooseTimeView = true }
                         } label: {
                             Text("Start")
                                 .font(.system(size: 30))
@@ -103,7 +113,8 @@ struct DifficultySelectionView: View {
                         .padding(.top, 40)
                         
                         Button {
-                            
+                            selectedMode = "Medium"
+                            withAnimation { presentChooseTimeView = true }
                         } label: {
                             Text("Start")
                                 .font(.system(size: 30))
@@ -138,7 +149,8 @@ struct DifficultySelectionView: View {
                         .padding(.top, 40)
                         
                         Button {
-                            
+                            selectedMode = "Hard"
+                            withAnimation { presentChooseTimeView = true }
                         } label: {
                             Text("Start")
                                 .font(.system(size: 30))
@@ -161,6 +173,109 @@ struct DifficultySelectionView: View {
                 
                 Spacer()
             }.offset(y: 120+20)
+            
+            VStack {
+                Spacer()
+                TimeSelectionPopup(showPopup: $presentChooseTimeView, frameWidth: frameWidth, frameHeight: frameHeight/2, modeSelected: selectedMode, currentGame: SelectedGame(selectedDifficulty: selectedMode, totalTime: 3.0, whenSelectedDate: Date(), game: GameData(rounds: [])))
+                    .offset(x: viewXOffset)
+                Spacer()
+            }
+            
+        }
+        .frame(width: frameWidth, height: frameHeight)
+        .background(.white)
+        .cornerRadius(20)
+        .shadow(radius: 5)
+        .onAppear() {
+            print(presentChooseTimeView)
+        }
+    }
+}
+
+struct TimeSelectionPopup: View {
+    @Binding var showPopup: Bool
+    let frameWidth: CGFloat
+    let frameHeight: CGFloat
+    let modeSelected: String
+    
+    // Configuration
+    @State var totalTime:Double = 1
+    @State var configMin:Double = 1
+    @State var currentGame: SelectedGame
+    
+    var body: some View {
+        ZStack {
+            // Close Button
+            VStack {
+                HStack {
+                    Spacer()
+                    
+                    Button {
+                        withAnimation { showPopup = false }
+                    } label: {
+                        ZStack {
+                            Circle()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(.red)
+                            Text("X")
+                                .foregroundColor(.white)
+                        }.padding()
+                    }
+                }
+                
+                Spacer()
+            }
+            
+            // Main
+            HStack {
+                VStack(alignment: .leading, spacing: 20) {
+                    VStack(alignment: .leading) {
+                        Text("**\(modeSelected)** Mode")
+                            .font(.system(size: 40))
+                        Text("3 Images, in \(String(totalTime).contains(".0") ? String(Int(totalTime)) : String(totalTime)) Minute\(totalTime <= 1 ? "" : "s").")
+                            .font(.system(size: 22))
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Change Time (per Image)")
+                            .font(.system(size: 25))
+                            .bold()
+                        Slider(value: $configMin, in: 20...120, step: 1) {}
+                            minimumValueLabel: {
+                                Text("20 s").font(.title2).fontWeight(.thin)
+                            } maximumValueLabel: {
+                                Text("2 mins").font(.title2).fontWeight(.thin)
+                            }
+                            .frame(width: frameWidth/2)
+                            .tint(Color("MainBlue"))
+                            .onChange(of: configMin) { _ in
+                        totalTime = (configMin*3)/60
+                        totalTime = Double(round(10 * totalTime) / 10)
+                    }
+                        Text("Current Duration: \(String(totalTime).contains(".0") ? String(Int(totalTime)) : String(totalTime)) Minute\(totalTime <= 1 ? "" : "s")")
+                            .font(.system(size: 22))
+                    }
+                    
+                    Button {
+                        currentGame = SelectedGame(selectedDifficulty: modeSelected, totalTime: totalTime, whenSelectedDate: Date(), game: GameData(rounds: []))
+                        print(currentGame)
+                    } label: {
+                        Text("Lets Go!")
+                            .font(.system(size: 30))
+                            .fontWeight(.heavy)
+                            .foregroundColor(.white)
+                            .padding(10)
+                            .padding(.leading, 50)
+                            .padding(.trailing, 50)
+                            .background(Color("MainBlue"))
+                            .cornerRadius(20)
+                    }
+                }
+                .padding()
+                .padding(.leading, 20)
+                
+                Spacer()
+            }
         }
         .frame(width: frameWidth, height: frameHeight)
         .background(.white)
@@ -169,19 +284,12 @@ struct DifficultySelectionView: View {
     }
 }
 
-struct TimeSelectionPopup: View {
-    var body: some View {
-        VStack {
-            Text("Hello World")
-        }
-    }
-}
-
 struct DSBindingViewPreviewContainer : View {
     @State private var value = false
     
     var body: some View {
-        DifficultySelectionView(presentView: $value, frameWidth: 882, frameHeight: 668)
+        //        DifficultySelectionView(presentView: $value, frameWidth: 882, frameHeight: 668)
+        TimeSelectionPopup(showPopup: $value,frameWidth: 882 ,frameHeight: 668/2, modeSelected: "Easy", currentGame: SelectedGame(selectedDifficulty: "easy", totalTime: 3.0, whenSelectedDate: Date(), game: GameData(rounds: [])))
     }
 }
 
