@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		591252DC2914BEC50080489E /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591252DB2914BEC50080489E /* DrawingView.swift */; };
+		591252DE2914BEDE0080489E /* DifficultySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591252DD2914BEDE0080489E /* DifficultySelectionView.swift */; };
+		591252E02914BEF40080489E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591252DF2914BEF40080489E /* SettingsView.swift */; };
+		591252E32914BF4A0080489E /* UserStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591252E22914BF4A0080489E /* UserStatistics.swift */; };
+		591252E52914BF680080489E /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591252E42914BF680080489E /* StatisticsView.swift */; };
 		595B314928D76D5F00B3B631 /* SketchPerfectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595B314828D76D5F00B3B631 /* SketchPerfectApp.swift */; };
 		595B314B28D76D5F00B3B631 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595B314A28D76D5F00B3B631 /* ContentView.swift */; };
 		595B314D28D76D6100B3B631 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 595B314C28D76D6100B3B631 /* Assets.xcassets */; };
@@ -15,6 +20,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		591252DB2914BEC50080489E /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
+		591252DD2914BEDE0080489E /* DifficultySelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultySelectionView.swift; sourceTree = "<group>"; };
+		591252DF2914BEF40080489E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		591252E22914BF4A0080489E /* UserStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatistics.swift; sourceTree = "<group>"; };
+		591252E42914BF680080489E /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		595B314528D76D5F00B3B631 /* SketchPerfect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SketchPerfect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		595B314828D76D5F00B3B631 /* SketchPerfectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchPerfectApp.swift; sourceTree = "<group>"; };
 		595B314A28D76D5F00B3B631 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -35,6 +45,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		591252E12914BF3B0080489E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				591252E22914BF4A0080489E /* UserStatistics.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		595B313C28D76D5F00B3B631 = {
 			isa = PBXGroup;
 			children = (
@@ -56,6 +74,7 @@
 			children = (
 				595B314828D76D5F00B3B631 /* SketchPerfectApp.swift */,
 				59856CE02914178700FD7EBC /* Views */,
+				591252E12914BF3B0080489E /* Models */,
 				595B314C28D76D6100B3B631 /* Assets.xcassets */,
 				595B315128D76D6100B3B631 /* SketchPerfect.entitlements */,
 				595B314E28D76D6100B3B631 /* Preview Content */,
@@ -75,6 +94,10 @@
 			isa = PBXGroup;
 			children = (
 				595B314A28D76D5F00B3B631 /* ContentView.swift */,
+				591252E42914BF680080489E /* StatisticsView.swift */,
+				591252DF2914BEF40080489E /* SettingsView.swift */,
+				591252DD2914BEDE0080489E /* DifficultySelectionView.swift */,
+				591252DB2914BEC50080489E /* DrawingView.swift */,
 				59856CE12914179C00FD7EBC /* InfBackground.swift */,
 			);
 			name = Views;
@@ -153,6 +176,11 @@
 				59856CE22914179C00FD7EBC /* InfBackground.swift in Sources */,
 				595B314B28D76D5F00B3B631 /* ContentView.swift in Sources */,
 				595B314928D76D5F00B3B631 /* SketchPerfectApp.swift in Sources */,
+				591252E02914BEF40080489E /* SettingsView.swift in Sources */,
+				591252DE2914BEDE0080489E /* DifficultySelectionView.swift in Sources */,
+				591252E52914BF680080489E /* StatisticsView.swift in Sources */,
+				591252DC2914BEC50080489E /* DrawingView.swift in Sources */,
+				591252E32914BF4A0080489E /* UserStatistics.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
