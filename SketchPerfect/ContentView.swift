@@ -93,15 +93,25 @@ struct ContentView: View {
                 VStack {
                     DifficultySelectionView(presentView: $presentPlayView, frameWidth: geometry.size.width-100, frameHeight: (geometry.size.height/3)*2.7, selectedMode: "")
                         .offset(x: playXOffset)
+                        .padding(.top, 30)
                     Spacer()
                 }
                 
-                StatisticsView(presentView: $presentStatisticsView, frameWidth: geometry.size.width-100, frameHeight: (geometry.size.height/3)*2.7)
-                    .offset(x: statisticsXOffset)
+                VStack {
+                    StatisticsView(presentView: $presentStatisticsView, frameWidth: geometry.size.width-100, frameHeight: (geometry.size.height/3)*2.7)
+                        .offset(x: statisticsXOffset)
+                        .padding(.top, 30)
+                    Spacer()
+                }
                 
-                SettingsView(presentView: $presentSettingsView, frameWidth: geometry.size.width-100, frameHeight: (geometry.size.height/3)*2.7)
-                    .offset(x: settingsXOffset)
+                VStack {
+                    SettingsView(presentView: $presentSettingsView, frameWidth: geometry.size.width-100, frameHeight: (geometry.size.height/3)*2.7)
+                        .offset(x: settingsXOffset)
+                        .padding(.top, 30)
+                    Spacer()
+                }
             }
+            .ignoresSafeArea()
         }
     }
 }

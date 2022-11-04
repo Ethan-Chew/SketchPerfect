@@ -17,6 +17,10 @@
 		595B314D28D76D6100B3B631 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 595B314C28D76D6100B3B631 /* Assets.xcassets */; };
 		595B315028D76D6100B3B631 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 595B314F28D76D6100B3B631 /* Preview Assets.xcassets */; };
 		59856CE22914179C00FD7EBC /* InfBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59856CE12914179C00FD7EBC /* InfBackground.swift */; };
+		598A22DD29156F340036060A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598A22DC29156F340036060A /* StorageManager.swift */; };
+		598A22E029156FDB0036060A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 598A22DF29156FDB0036060A /* FirebaseStorage */; };
+		598A22E229156FDB0036060A /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 598A22E129156FDB0036060A /* FirebaseStorageCombine-Community */; };
+		598A22E42915703F0036060A /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598A22E32915703F0036060A /* ImageData.swift */; };
 		59A9941A2915184E003D617D /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A994192915184E003D617D /* UserData.swift */; };
 		59A9941D291518AE003D617D /* SelectedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A9941C291518AE003D617D /* SelectedGame.swift */; };
 /* End PBXBuildFile section */
@@ -34,6 +38,8 @@
 		595B314F28D76D6100B3B631 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		595B315128D76D6100B3B631 /* SketchPerfect.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SketchPerfect.entitlements; sourceTree = "<group>"; };
 		59856CE12914179C00FD7EBC /* InfBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfBackground.swift; sourceTree = "<group>"; };
+		598A22DC29156F340036060A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		598A22E32915703F0036060A /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
 		59A994192915184E003D617D /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		59A9941C291518AE003D617D /* SelectedGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedGame.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -43,6 +49,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				598A22E229156FDB0036060A /* FirebaseStorageCombine-Community in Frameworks */,
+				598A22E029156FDB0036060A /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +62,7 @@
 			children = (
 				591252E22914BF4A0080489E /* UserStatistics.swift */,
 				59A994192915184E003D617D /* UserData.swift */,
+				598A22DC29156F340036060A /* StorageManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -113,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				59A9941C291518AE003D617D /* SelectedGame.swift */,
+				598A22E32915703F0036060A /* ImageData.swift */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -133,6 +143,10 @@
 			dependencies = (
 			);
 			name = SketchPerfect;
+			packageProductDependencies = (
+				598A22DF29156FDB0036060A /* FirebaseStorage */,
+				598A22E129156FDB0036060A /* FirebaseStorageCombine-Community */,
+			);
 			productName = SketchPerfect;
 			productReference = 595B314528D76D5F00B3B631 /* SketchPerfect.app */;
 			productType = "com.apple.product-type.application";
@@ -161,6 +175,9 @@
 				Base,
 			);
 			mainGroup = 595B313C28D76D5F00B3B631;
+			packageReferences = (
+				598A22DE29156FDB0036060A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 595B314628D76D5F00B3B631 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -189,6 +206,7 @@
 			files = (
 				59856CE22914179C00FD7EBC /* InfBackground.swift in Sources */,
 				595B314B28D76D5F00B3B631 /* ContentView.swift in Sources */,
+				598A22DD29156F340036060A /* StorageManager.swift in Sources */,
 				595B314928D76D5F00B3B631 /* SketchPerfectApp.swift in Sources */,
 				59A9941A2915184E003D617D /* UserData.swift in Sources */,
 				591252E02914BEF40080489E /* SettingsView.swift in Sources */,
@@ -197,6 +215,7 @@
 				591252E52914BF680080489E /* StatisticsView.swift in Sources */,
 				591252DC2914BEC50080489E /* DrawingView.swift in Sources */,
 				591252E32914BF4A0080489E /* UserStatistics.swift in Sources */,
+				598A22E42915703F0036060A /* ImageData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +421,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		598A22DE29156FDB0036060A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		598A22DF29156FDB0036060A /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 598A22DE29156FDB0036060A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		598A22E129156FDB0036060A /* FirebaseStorageCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 598A22DE29156FDB0036060A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseStorageCombine-Community";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 595B313D28D76D5F00B3B631 /* Project object */;
 }

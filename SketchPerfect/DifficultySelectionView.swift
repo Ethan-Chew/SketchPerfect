@@ -62,10 +62,14 @@ struct DifficultySelectionView: View {
             .padding(.top, 10)
             
             // Difficulty Boxes
-            VStack(spacing: 20) {
+            VStack(alignment: .leading, spacing: 20) {
                 // Easy Box
                 HStack {
-                    Spacer() // Temp
+                    Image("EasyIcon")
+                        .resizable()
+                        .frame(width: 150, height: 150)
+                        .padding()
+                    
                     VStack(alignment: .leading, spacing: 30) {
                         VStack(alignment: .leading) {
                             Text("Easy")
@@ -73,6 +77,7 @@ struct DifficultySelectionView: View {
                                 .fontWeight(.heavy)
                             Text("Easy Mode includes 3 easy shapes to replicate")
                                 .font(.system(size: 22))
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                         .padding(.top, 40)
                         
@@ -90,8 +95,10 @@ struct DifficultySelectionView: View {
                                 .background(Color("MainGreen"))
                                 .cornerRadius(20)
                         }
-                        .padding(.bottom, 40)
+                        .padding(.bottom, 50)
                     }
+                    
+                    Spacer()
                 }
                 .frame(width: frameWidth-60, height: frameWidth/4)
                 .padding()
@@ -101,14 +108,19 @@ struct DifficultySelectionView: View {
                 
                 // Medium Box
                 HStack {
-                    Spacer() // Temp
+                    Image("MediumIcon")
+                        .resizable()
+                        .frame(width: 150, height: 150)
+                        .padding()
+                    
                     VStack(alignment: .leading, spacing: 30) {
                         VStack(alignment: .leading) {
                             Text("Medium")
                                 .font(.system(size: 45))
                                 .fontWeight(.heavy)
-                            Text("Medium Difficulty includes 4 outlines to replicate")
+                            Text("Medium Difficulty includes 5 outlines to replicate")
                                 .font(.system(size: 22))
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                         .padding(.top, 40)
                         
@@ -126,8 +138,10 @@ struct DifficultySelectionView: View {
                                 .background(Color("MainYellow"))
                                 .cornerRadius(20)
                         }
-                        .padding(.bottom, 40)
+                        .padding(.bottom, 50)
                     }
+                    
+                    Spacer()
                 }
                 .frame(width: frameWidth-60, height: frameWidth/4)
                 .padding()
@@ -136,15 +150,20 @@ struct DifficultySelectionView: View {
                 .shadow(radius: 2)
                 
                 // Hard Box
-                HStack {
-                    Spacer() // Temp
+                HStack() {
+                    Image("HardIcon")
+                        .resizable()
+                        .frame(width: 150, height: 150)
+                        .padding()
+                    
                     VStack(alignment: .leading, spacing: 30) {
                         VStack(alignment: .leading) {
                             Text("Hard")
                                 .font(.system(size: 45))
                                 .fontWeight(.heavy)
-                            Text("Hard Difficulty includes 5 harder outlines to replicate")
+                            Text("Hard Difficulty includes 7 harder outlines to replicate")
                                 .font(.system(size: 22))
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                         .padding(.top, 40)
                         
@@ -162,8 +181,10 @@ struct DifficultySelectionView: View {
                                 .background(Color("MainRedBrown"))
                                 .cornerRadius(20)
                         }
-                        .padding(.bottom, 40)
+                        .padding(.bottom, 50)
                     }
+                    
+                    Spacer()
                 }
                 .frame(width: frameWidth-60, height: frameWidth/4)
                 .padding()
@@ -176,7 +197,7 @@ struct DifficultySelectionView: View {
             
             VStack {
                 Spacer()
-                TimeSelectionPopup(showPopup: $presentChooseTimeView, frameWidth: frameWidth, frameHeight: frameHeight/2, modeSelected: selectedMode, currentGame: SelectedGame(selectedDifficulty: selectedMode, totalTime: 3.0, whenSelectedDate: Date(), game: GameData(rounds: [])))
+                TimeSelectionPopup(showPopup: $presentChooseTimeView, frameWidth: frameWidth, frameHeight: frameHeight, modeSelected: selectedMode, currentGame: SelectedGame(selectedDifficulty: selectedMode, totalTime: 3.0, whenSelectedDate: Date(), game: GameData(rounds: [])))
                     .offset(x: viewXOffset)
                 Spacer()
             }
@@ -186,9 +207,6 @@ struct DifficultySelectionView: View {
         .background(.white)
         .cornerRadius(20)
         .shadow(radius: 5)
-        .onAppear() {
-            print(presentChooseTimeView)
-        }
     }
 }
 
@@ -202,6 +220,12 @@ struct TimeSelectionPopup: View {
     @State var totalTime:Double = 1
     @State var configMin:Double = 1
     @State var currentGame: SelectedGame
+    
+    // Hide/Show View
+    @State var presentDrawingView = false
+    var drawingXOffset: CGFloat {
+        presentDrawingView ? 0 : UIScreen.main.bounds.width
+    }
     
     var body: some View {
         ZStack {
@@ -259,6 +283,9 @@ struct TimeSelectionPopup: View {
                     Button {
                         currentGame = SelectedGame(selectedDifficulty: modeSelected, totalTime: totalTime, whenSelectedDate: Date(), game: GameData(rounds: []))
                         print(currentGame)
+                        // Start Game
+                        withAnimation { presentDrawingView = true }
+                        showPopup = false
                     } label: {
                         Text("Lets Go!")
                             .font(.system(size: 30))
@@ -277,10 +304,13 @@ struct TimeSelectionPopup: View {
                 Spacer()
             }
         }
-        .frame(width: frameWidth, height: frameHeight)
+        .frame(width: frameWidth, height: frameHeight/2)
         .background(.white)
         .cornerRadius(20)
         .shadow(radius: 5)
+        .fullScreenCover(isPresented: $presentDrawingView) {
+            DrawingView(frameWidth: frameWidth, frameHeight: frameHeight, gameData: currentGame)
+        }
     }
 }
 
@@ -288,8 +318,8 @@ struct DSBindingViewPreviewContainer : View {
     @State private var value = false
     
     var body: some View {
-        //        DifficultySelectionView(presentView: $value, frameWidth: 882, frameHeight: 668)
-        TimeSelectionPopup(showPopup: $value,frameWidth: 882 ,frameHeight: 668/2, modeSelected: "Easy", currentGame: SelectedGame(selectedDifficulty: "easy", totalTime: 3.0, whenSelectedDate: Date(), game: GameData(rounds: [])))
+        DifficultySelectionView(presentView: $value, frameWidth: 882, frameHeight: 668, selectedMode: "Easy")
+//        TimeSelectionPopup(showPopup: $value,frameWidth: 882 ,frameHeight: 668/2, modeSelected: "Easy", currentGame: SelectedGame(selectedDifficulty: "easy", totalTime: 3.0, whenSelectedDate: Date(), game: GameData(rounds: [])))
     }
 }
 
