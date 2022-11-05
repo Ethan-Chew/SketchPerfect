@@ -24,6 +24,10 @@ struct ContentView: View {
         presentSettingsView ? 0 : UIScreen.main.bounds.width
     }
     
+    // Classes
+    @ObservedObject var storageManager = StorageManager()
+    @ObservedObject var userData = UserData()
+    
     var body: some View {
         GeometryReader { geometry in
             let btnWidth = geometry.size.width/2-30
@@ -112,6 +116,18 @@ struct ContentView: View {
                 }
             }
             .ignoresSafeArea()
+            .onAppear() {
+                if userData.lastDataUpdate == [] {
+                    storageManager.getImages()
+                    userData.lastDataUpdate = [String(Date().timeIntervalSince1970)]
+                } else {
+                    if Int(Date().timeIntervalSince1970) - Int(userData.lastDataUpdate[0])!  > (86400*7) {
+                        // If last update was more than a week ago
+                        storageManager.getImages()
+                        userData.lastDataUpdate = [String(Date().timeIntervalSince1970)]
+                    }
+                }
+            }
         }
     }
 }
