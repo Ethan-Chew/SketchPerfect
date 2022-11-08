@@ -21,6 +21,7 @@
 		598A22E029156FDB0036060A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 598A22DF29156FDB0036060A /* FirebaseStorage */; };
 		598A22E229156FDB0036060A /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 598A22E129156FDB0036060A /* FirebaseStorageCombine-Community */; };
 		598A22E42915703F0036060A /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598A22E32915703F0036060A /* ImageData.swift */; };
+		598AF885291A0D1100197410 /* CircularProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598AF884291A0D1100197410 /* CircularProgress.swift */; };
 		59A9941A2915184E003D617D /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A994192915184E003D617D /* UserData.swift */; };
 		59A9941D291518AE003D617D /* SelectedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A9941C291518AE003D617D /* SelectedGame.swift */; };
 		59FA1D1D29161C9F00873D74 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 59FA1D1C29161C9F00873D74 /* GoogleService-Info.plist */; };
@@ -41,6 +42,7 @@
 		59856CE12914179C00FD7EBC /* InfBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfBackground.swift; sourceTree = "<group>"; };
 		598A22DC29156F340036060A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		598A22E32915703F0036060A /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
+		598AF884291A0D1100197410 /* CircularProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgress.swift; sourceTree = "<group>"; };
 		59A994192915184E003D617D /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		59A9941C291518AE003D617D /* SelectedGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedGame.swift; sourceTree = "<group>"; };
 		59FA1D1C29161C9F00873D74 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				591252DD2914BEDE0080489E /* DifficultySelectionView.swift */,
 				591252DB2914BEC50080489E /* DrawingView.swift */,
 				59856CE12914179C00FD7EBC /* InfBackground.swift */,
+				598AF884291A0D1100197410 /* CircularProgress.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				598AF885291A0D1100197410 /* CircularProgress.swift in Sources */,
 				59856CE22914179C00FD7EBC /* InfBackground.swift in Sources */,
 				595B314B28D76D5F00B3B631 /* ContentView.swift in Sources */,
 				598A22DD29156F340036060A /* StorageManager.swift in Sources */,

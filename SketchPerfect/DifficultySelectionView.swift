@@ -18,6 +18,10 @@ struct DifficultySelectionView: View {
         presentChooseTimeView ? 0 : -UIScreen.main.bounds.width
     }
     
+    // ObservedObject
+    @ObservedObject var storageManager: StorageManager
+    @ObservedObject var userData: UserData
+    
     // Variables
     @State var selectedMode: String
     
@@ -197,7 +201,7 @@ struct DifficultySelectionView: View {
             
             VStack {
                 Spacer()
-                TimeSelectionPopup(showPopup: $presentChooseTimeView, frameWidth: frameWidth, frameHeight: frameHeight, modeSelected: selectedMode, currentGame: SelectedGame(selectedDifficulty: selectedMode, totalTime: 3.0, whenSelectedDate: Date(), game: GameData(rounds: [])))
+                TimeSelectionPopup(showPopup: $presentChooseTimeView, frameWidth: frameWidth, frameHeight: frameHeight, modeSelected: selectedMode, currentGame: SelectedGame(selectedDifficulty: selectedMode, totalTime: 3.0, whenSelectedDate: Date(), game: GameData(rounds: [])), storageManager: storageManager, userData: userData)
                     .offset(x: viewXOffset)
                 Spacer()
             }
@@ -220,6 +224,10 @@ struct TimeSelectionPopup: View {
     @State var totalTime:Double = 1
     @State var configMin:Double = 1
     @State var currentGame: SelectedGame
+    
+    // Observed Objects
+    @ObservedObject var storageManager: StorageManager
+    @ObservedObject var userData: UserData
     
     // Hide/Show View
     @State var presentDrawingView = false
@@ -309,7 +317,7 @@ struct TimeSelectionPopup: View {
         .cornerRadius(20)
         .shadow(radius: 5)
         .fullScreenCover(isPresented: $presentDrawingView) {
-            DrawingView(frameWidth: frameWidth, frameHeight: frameHeight, gameData: currentGame)
+            DrawingView(frameWidth: frameWidth, frameHeight: frameHeight, storageManager: storageManager, userData: userData, gameData: currentGame)
         }
     }
 }
@@ -318,15 +326,13 @@ struct DSBindingViewPreviewContainer : View {
     @State private var value = false
     
     var body: some View {
-        DifficultySelectionView(presentView: $value, frameWidth: 882, frameHeight: 668, selectedMode: "Easy")
+        DifficultySelectionView(presentView: $value, frameWidth: 882, frameHeight: 668, storageManager: StorageManager(), userData: UserData(),selectedMode: "Easy")
 //        TimeSelectionPopup(showPopup: $value,frameWidth: 882 ,frameHeight: 668/2, modeSelected: "Easy", currentGame: SelectedGame(selectedDifficulty: "easy", totalTime: 3.0, whenSelectedDate: Date(), game: GameData(rounds: [])))
     }
 }
 
-#if DEBUG
 struct DSBindingView_Previews : PreviewProvider {
     static var previews: some View {
         DSBindingViewPreviewContainer()
     }
 }
-#endif

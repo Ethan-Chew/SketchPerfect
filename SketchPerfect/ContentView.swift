@@ -95,7 +95,7 @@ struct ContentView: View {
                 }
                 
                 VStack {
-                    DifficultySelectionView(presentView: $presentPlayView, frameWidth: geometry.size.width-100, frameHeight: (geometry.size.height/3)*2.7, selectedMode: "")
+                    DifficultySelectionView(presentView: $presentPlayView, frameWidth: geometry.size.width-100, frameHeight: (geometry.size.height/3)*2.7, storageManager: storageManager, userData: userData,selectedMode: "")
                         .offset(x: playXOffset)
                         .padding(.top, 30)
                     Spacer()
@@ -121,7 +121,7 @@ struct ContentView: View {
                     storageManager.getImages()
                     userData.lastDataUpdate = [String(Date().timeIntervalSince1970)]
                 } else {
-                    if Int(Date().timeIntervalSince1970) - Int(userData.lastDataUpdate[0])!  > (86400*7) {
+                    if Int(Date().timeIntervalSince1970) - Int(Double(userData.lastDataUpdate[0])!)  > (86400*7) {
                         // If last update was more than a week ago
                         storageManager.getImages()
                         userData.lastDataUpdate = [String(Date().timeIntervalSince1970)]
