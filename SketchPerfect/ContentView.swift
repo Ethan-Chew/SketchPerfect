@@ -117,6 +117,7 @@ struct ContentView: View {
             }
             .ignoresSafeArea()
             .onAppear() {
+                userData.lastDataUpdate = []
                 if userData.lastDataUpdate == [] {
                     storageManager.getImages()
                     userData.lastDataUpdate = [String(Date().timeIntervalSince1970)]

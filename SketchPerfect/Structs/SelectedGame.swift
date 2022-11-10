@@ -8,18 +8,19 @@
 import Foundation
 
 struct SelectedGame: Codable {
-    let selectedDifficulty: String // Either 'easy', 'medium', 'hard'
-    let totalTime: Double
-    let whenSelectedDate: Date
-    let game: GameData
+    var selectedDifficulty: String // Either 'easy', 'medium', 'hard'
+    var totalTime: Double
+    var restPeriod: Int
+    var whenSelectedDate: Date
+    var game: GameData
 }
 
 struct GameData: Codable {
-    let rounds: [RoundData]
+    var rounds: [RoundData]
 }
 
 struct RoundData: Codable {
     var id = UUID()
-    let imageID: String
-    let percentageAccuracy: String
+    var image: Data
+    var percentageAccuracy: String
 }

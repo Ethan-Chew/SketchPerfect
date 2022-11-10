@@ -42,9 +42,9 @@ class UserData: ObservableObject {
         let currentGameDat = userDefaults.object(forKey: "currentGameData")
         if let currentGameDat = currentGameDat {
             let gameData = try? decoder.decode(SelectedGame.self, from: currentGameDat as! Data)
-            self.currentGameData = gameData ?? SelectedGame(selectedDifficulty: "", totalTime: 0.0, whenSelectedDate: Date(), game: GameData(rounds: []))
+            self.currentGameData = gameData ?? SelectedGame(selectedDifficulty: "", totalTime: 0.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: []))
         } else {
-            self.currentGameData = SelectedGame(selectedDifficulty: "", totalTime: 0.0, whenSelectedDate: Date(), game: GameData(rounds: []))
+            self.currentGameData = SelectedGame(selectedDifficulty: "", totalTime: 0.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: []))
         }
         
         // Image Data

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PencilKit
 
 struct DrawingView: View {
     @Environment(\.dismiss) var dismiss
@@ -38,11 +39,19 @@ struct DrawingView: View {
         }
     }
     
+    // PencilKit
+    @State private var canvasView = PKCanvasView()
+    @State private var toolPicker = PKToolPicker()
+    @State var deleteConfirmation: Bool = false
+    
     var body: some View {
         ZStack {
             InfiniteBackgroundView()
             
             ZStack {
+                ZStack {
+                    
+                }
                 // Top Header
                 ZStack(alignment: .top) {
                     VStack {
@@ -106,6 +115,8 @@ struct DrawingView: View {
                 VStack {
                     // Display Image and Timer
                     HStack {
+                        Spacer()
+                        
                         switch gameData.selectedDifficulty {
                         case "Easy":
                             Image(uiImage: UIImage(data: userData.gameImages.easy[roundNumber - 1])!)
@@ -126,18 +137,57 @@ struct DrawingView: View {
                             fatalError("Cannot find Selected Difficulty of: \(gameData.selectedDifficulty)")
                         }
                         
-                        CircularProgress(colour: timeRemaining[1] as? String ?? "MainGreen", progress: progress)
+                        Spacer()
+                        
+                        ZStack(alignment: .center) {
+                            CircularProgress(colour: timeRemaining[1] as? String ?? "MainGreen", progress: progress)
+                                .frame(maxWidth: frameWidth/4, maxHeight: frameWidth/4+30)
+                            VStack(alignment: .center) {
+                                if Int(timeRemaining[0] as! Double) > 0 {
+                                    Text(String(Int(timeRemaining[0] as! Double)))
+                                        .fontWeight(.heavy)
+                                        .font(.system(size: 27))
+                                        .foregroundColor(Color(timeRemaining[1] as? String ?? "MainGreen"))
+                                    Text("Seconds Remaining")
+                                        .font(.system(size: 20))
+                                        .foregroundColor(Color(timeRemaining[1] as? String ?? "MainGreen"))
+                                        .frame(maxWidth: frameWidth/4)
+                                        .multilineTextAlignment(.center)
+                                } else {
+                                    Text("Times Up!")
+                                        .font(.system(size: 27))
+                                        .foregroundColor(Color("MainRed"))
+                                        .fontWeight(.bold)
+                                        .frame(maxWidth: frameWidth/4)
+                                        .multilineTextAlignment(.center)
+                                }
+                            }
+                        }
+                        
+                        Spacer()
                     }
                     
                     // Drawing Area
-                    
+                    DrawingCanvas(canvas: $canvasView, toolPicker: $toolPicker, userData: userData, gameData: gameData, currentRound: roundNumber)
+                        .preferredColorScheme(.light)
+                        .foregroundColor(.white)
+                        .frame(width: frameWidth, height: frameHeight-(frameWidth/4+30)-20)
+                        .alert("Are you sure?", isPresented: $deleteConfirmation, actions: {
+                            Button("Yes", role: .destructive, action: {
+                                canvasView.drawing = PKDrawing()
+                            })
+                        }, message: {
+                            Text("This button will clear your whole canvas (removing your drawing FOREVER).")
+                        })
                 }
+                .offset(y: 130)
             }
             .frame(width: frameWidth, height: frameHeight)
             .background(.white)
             .cornerRadius(20)
             .shadow(radius: 5)
         }
+        .ignoresSafeArea()
         .onAppear() {
             maxRounds = getMaxRounds(difficulty: gameData.selectedDifficulty)
             if maxRounds == 0 {
@@ -152,14 +202,14 @@ struct DrawingView: View {
             // Config Timer
             timeRemaining = [gameData.totalTime/Double(maxRounds)*60.0, "MainGreen"]
         }
-        .onReceive(timer) { index in
-            if timeRemaining.count != 0 {
+        .onReceive(timer) { _ in
+            if timeRemaining.count != 0 && timeRemaining[0] as! Double >= 0.0 {
                 timeRemaining[0] = (timeRemaining[0] as? Double)! - 1.0
                 let oneSecProgress = 1.0 / (gameData.totalTime/Double(maxRounds)*60.0)
                 withAnimation { progress = progress - oneSecProgress }
                 if progress > 0.5 {
                     withAnimation { timeRemaining[1] = "MainGreen" }
-                } else if progress > 0.2 {
+                } else if progress > 0.3 {
                     withAnimation { timeRemaining[1] = "MainYellow" }
                 } else {
                     withAnimation { timeRemaining[1] = "MainRed" }
@@ -171,6 +221,6 @@ struct DrawingView: View {
 
 struct DrawingView_Previews: PreviewProvider {
     static var previews: some View {
-        DrawingView(frameWidth: 882, frameHeight: 668, storageManager: StorageManager(), userData: UserData(), gameData: SelectedGame(selectedDifficulty: "easy", totalTime: 3.0, whenSelectedDate: Date(), game: GameData(rounds: [])))
+        DrawingView(frameWidth: 882, frameHeight: 668, storageManager: StorageManager(), userData: UserData(), gameData: SelectedGame(selectedDifficulty: "easy", totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: [])))
     }
 }

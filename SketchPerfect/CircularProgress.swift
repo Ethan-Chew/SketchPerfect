@@ -17,14 +17,14 @@ struct CircularProgress: View {
             Circle()
                 .stroke(
                     Color(colour).opacity(0.5),
-                    lineWidth: 30
+                    lineWidth: 22
                 )
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(
                     Color(colour),
                     style: StrokeStyle(
-                        lineWidth: 30,
+                        lineWidth: 22,
                         lineCap: .round
                     )
                 )

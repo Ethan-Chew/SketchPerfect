@@ -201,7 +201,7 @@ struct DifficultySelectionView: View {
             
             VStack {
                 Spacer()
-                TimeSelectionPopup(showPopup: $presentChooseTimeView, frameWidth: frameWidth, frameHeight: frameHeight, modeSelected: selectedMode, currentGame: SelectedGame(selectedDifficulty: selectedMode, totalTime: 3.0, whenSelectedDate: Date(), game: GameData(rounds: [])), storageManager: storageManager, userData: userData)
+                TimeSelectionPopup(showPopup: $presentChooseTimeView, frameWidth: frameWidth, frameHeight: frameHeight, modeSelected: selectedMode, currentGame: SelectedGame(selectedDifficulty: selectedMode, totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: [])), storageManager: storageManager, userData: userData)
                     .offset(x: viewXOffset)
                 Spacer()
             }
@@ -223,6 +223,8 @@ struct TimeSelectionPopup: View {
     // Configuration
     @State var totalTime:Double = 1
     @State var configMin:Double = 1
+    @State var configRest: Double = 10
+    @State var restPeriod: Int = 10
     @State var currentGame: SelectedGame
     
     // Observed Objects
@@ -267,29 +269,53 @@ struct TimeSelectionPopup: View {
                         Text("3 Images, in \(String(totalTime).contains(".0") ? String(Int(totalTime)) : String(totalTime)) Minute\(totalTime <= 1 ? "" : "s").")
                             .font(.system(size: 22))
                     }
+                    .padding(.top, 20)
                     
                     VStack(alignment: .leading) {
                         Text("Change Time (per Image)")
                             .font(.system(size: 25))
                             .bold()
-                        Slider(value: $configMin, in: 20...120, step: 1) {}
+                        Slider(value: $configMin, in: 10...120, step: 1) {}
                             minimumValueLabel: {
-                                Text("20 s").font(.title2).fontWeight(.thin)
+                                Text("10 s").font(.title2).fontWeight(.thin)
                             } maximumValueLabel: {
                                 Text("2 mins").font(.title2).fontWeight(.thin)
                             }
                             .frame(width: frameWidth/2)
                             .tint(Color("MainBlue"))
                             .onChange(of: configMin) { _ in
-                        totalTime = (configMin*3)/60
-                        totalTime = Double(round(10 * totalTime) / 10)
-                    }
+                                totalTime = (configMin*3)/60
+                                totalTime = Double(round(10 * totalTime) / 10)
+                            }
                         Text("Current Duration: \(String(totalTime).contains(".0") ? String(Int(totalTime)) : String(totalTime)) Minute\(totalTime <= 1 ? "" : "s")")
                             .font(.system(size: 22))
                     }
                     
+                    VStack(alignment: .leading) {
+                        Text("Change Rest Period")
+                            .font(.system(size: 25))
+                            .bold()
+                        Text("The amount of time before the timer starts")
+                            .font(.system(size: 20))
+                            .fontWeight(.light)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Slider(value: $configRest, in: 0...30, step: 1) {}
+                            minimumValueLabel: {
+                                Text("0 s").font(.title2).fontWeight(.thin)
+                            } maximumValueLabel: {
+                                Text("30 s").font(.title2).fontWeight(.thin)
+                            }
+                            .frame(width: frameWidth/2)
+                            .tint(Color("MainBlue"))
+                            .onChange(of: configRest) { _ in
+                                restPeriod = Int(configRest)
+                            }
+                        Text("Current Duration: \(restPeriod) Seconds")
+                            .font(.system(size: 22))
+                    }
+                    
                     Button {
-                        currentGame = SelectedGame(selectedDifficulty: modeSelected, totalTime: totalTime, whenSelectedDate: Date(), game: GameData(rounds: []))
+                        currentGame = SelectedGame(selectedDifficulty: modeSelected, totalTime: totalTime, restPeriod: restPeriod, whenSelectedDate: Date(), game: GameData(rounds: []))
                         print(currentGame)
                         // Start Game
                         withAnimation { presentDrawingView = true }
@@ -305,6 +331,7 @@ struct TimeSelectionPopup: View {
                             .background(Color("MainBlue"))
                             .cornerRadius(20)
                     }
+                    .padding(.bottom, 20)
                 }
                 .padding()
                 .padding(.leading, 20)
@@ -312,7 +339,7 @@ struct TimeSelectionPopup: View {
                 Spacer()
             }
         }
-        .frame(width: frameWidth, height: frameHeight/2)
+        .frame(width: frameWidth, height: frameHeight/2+60)
         .background(.white)
         .cornerRadius(20)
         .shadow(radius: 5)

@@ -16,6 +16,7 @@
 		595B314B28D76D5F00B3B631 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595B314A28D76D5F00B3B631 /* ContentView.swift */; };
 		595B314D28D76D6100B3B631 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 595B314C28D76D6100B3B631 /* Assets.xcassets */; };
 		595B315028D76D6100B3B631 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 595B314F28D76D6100B3B631 /* Preview Assets.xcassets */; };
+		5982966A291B60BB00C33552 /* DrawingCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59829669291B60BB00C33552 /* DrawingCanvas.swift */; };
 		59856CE22914179C00FD7EBC /* InfBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59856CE12914179C00FD7EBC /* InfBackground.swift */; };
 		598A22DD29156F340036060A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598A22DC29156F340036060A /* StorageManager.swift */; };
 		598A22E029156FDB0036060A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 598A22DF29156FDB0036060A /* FirebaseStorage */; };
@@ -39,6 +40,7 @@
 		595B314C28D76D6100B3B631 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		595B314F28D76D6100B3B631 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		595B315128D76D6100B3B631 /* SketchPerfect.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SketchPerfect.entitlements; sourceTree = "<group>"; };
+		59829669291B60BB00C33552 /* DrawingCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingCanvas.swift; sourceTree = "<group>"; };
 		59856CE12914179C00FD7EBC /* InfBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfBackground.swift; sourceTree = "<group>"; };
 		598A22DC29156F340036060A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		598A22E32915703F0036060A /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 			children = (
 				595B314828D76D5F00B3B631 /* SketchPerfectApp.swift */,
 				59856CE02914178700FD7EBC /* Views */,
+				59829668291B608000C33552 /* DrawingCanvas */,
 				591252E12914BF3B0080489E /* Models */,
 				59A9941B2915187C003D617D /* Structs */,
 				595B314C28D76D6100B3B631 /* Assets.xcassets */,
@@ -108,6 +111,14 @@
 				595B314F28D76D6100B3B631 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		59829668291B608000C33552 /* DrawingCanvas */ = {
+			isa = PBXGroup;
+			children = (
+				59829669291B60BB00C33552 /* DrawingCanvas.swift */,
+			);
+			path = DrawingCanvas;
 			sourceTree = "<group>";
 		};
 		59856CE02914178700FD7EBC /* Views */ = {
@@ -218,6 +229,7 @@
 				595B314928D76D5F00B3B631 /* SketchPerfectApp.swift in Sources */,
 				59A9941A2915184E003D617D /* UserData.swift in Sources */,
 				591252E02914BEF40080489E /* SettingsView.swift in Sources */,
+				5982966A291B60BB00C33552 /* DrawingCanvas.swift in Sources */,
 				591252DE2914BEDE0080489E /* DifficultySelectionView.swift in Sources */,
 				59A9941D291518AE003D617D /* SelectedGame.swift in Sources */,
 				591252E52914BF680080489E /* StatisticsView.swift in Sources */,
@@ -280,7 +292,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -335,7 +347,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
