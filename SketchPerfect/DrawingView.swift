@@ -26,6 +26,7 @@ struct DrawingView: View {
     @State var timeRemaining: [Any] = [0.0, "MainGreen"]
     @State var progress = 1.0
     @State var timer = Timer.publish(every: 1, on: .current, in: .common).autoconnect()
+    @State var disableDrawing = false
     func getMaxRounds(difficulty: String) -> Int{
         switch difficulty {
         case "Easy":
@@ -165,20 +166,57 @@ struct DrawingView: View {
                         }
                         
                         Spacer()
+                        
+                        // Debug
+//                        if let imageData = UIImage(data: userData.currentGameData.game.rounds[roundNumber - 1].image) {
+//                            Image(uiImage: imageData)
+//                                .resizable()
+//                                .scaledToFit()
+//                                .border(Color.black, width: 2)
+//                        }
                     }
                     
                     // Drawing Area
-                    DrawingCanvas(canvas: $canvasView, toolPicker: $toolPicker, userData: userData, gameData: gameData, currentRound: roundNumber)
-                        .preferredColorScheme(.light)
-                        .foregroundColor(.white)
-                        .frame(width: frameWidth, height: frameHeight-(frameWidth/4+30)-20)
-                        .alert("Are you sure?", isPresented: $deleteConfirmation, actions: {
-                            Button("Yes", role: .destructive, action: {
-                                canvasView.drawing = PKDrawing()
+                    ZStack(alignment: .leading) {
+                        DrawingCanvas(canvas: $canvasView, toolPicker: $toolPicker, userData: userData, gameData: gameData, currentRound: roundNumber)
+                            .preferredColorScheme(.light)
+                            .foregroundColor(.white)
+                            .frame(width: frameWidth, height: frameHeight-(frameWidth/4+30)-20)
+                            .alert("Are you sure?", isPresented: $deleteConfirmation, actions: {
+                                Button("Yes", role: .destructive, action: {
+                                    canvasView.drawing = PKDrawing()
+                                })
+                            }, message: {
+                                Text("This button will clear your whole canvas (removing your drawing FOREVER).")
                             })
-                        }, message: {
-                            Text("This button will clear your whole canvas (removing your drawing FOREVER).")
-                        })
+                            .disabled(disableDrawing)
+                            .border(.gray, width: 1)
+                        
+                        VStack {
+                            HStack(spacing: 20) {
+                                Text("Draw!")
+                                    .bold()
+                                    .font(.largeTitle)
+                                
+                                Button {
+                                    print("submit")
+                                } label: {
+                                    Text("Submit")
+                                        .padding(9)
+                                        .padding(.leading, 10)
+                                        .padding(.trailing, 10)
+                                        .background(Color("MainGreen"))
+                                        .foregroundColor(.white)
+                                        .bold()
+                                        .font(.title3)
+                                        .cornerRadius(16)
+                                }
+                            }
+                            .padding(.leading, 10)
+                            .padding(.top, 10)
+                            Spacer()
+                        }
+                    }
                 }
                 .offset(y: 130)
             }
@@ -215,6 +253,12 @@ struct DrawingView: View {
                     withAnimation { timeRemaining[1] = "MainRed" }
                 }
             }
+            
+            if Int(timeRemaining[0] as! Double) == 0 {
+                disableDrawing = true
+            }
+            
+            userData.currentGameData.game.rounds[roundNumber - 1].image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!
         }
     }
 }

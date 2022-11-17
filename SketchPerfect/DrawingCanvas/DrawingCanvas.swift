@@ -34,7 +34,6 @@ struct DrawingCanvas: UIViewRepresentable {
     func makeUIView(context: Context) -> PKCanvasView {
         canvas.overrideUserInterfaceStyle = .light
         canvas.drawingPolicy = .anyInput
-//        userData.currentGameData.game.rounds[currentRound - 1].image = canvas.drawing.image(from: canvas.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!
         canvas.tool = PKInkingTool(.pen, color: .gray, width: 10)
         #if targetEnvironment(simulator)
         canvas.drawingPolicy = .anyInput
