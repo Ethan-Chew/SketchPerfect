@@ -117,24 +117,20 @@ struct ContentView: View {
             }
             .ignoresSafeArea()
             .onAppear() {
-                userData.lastDataUpdate = []
                 if userData.lastDataUpdate == [] {
-                    storageManager.getImages()
-                    print("haha its here", storageManager.imageData)
-                    
-                    userData.gameImages = storageManager.imageData
-                    print(userData.gameImages)
+                    storageManager.getImages { (data) in
+                        userData.gameImages = data!
+                    }
                     userData.lastDataUpdate = [String(Date().timeIntervalSince1970)]
                 } else {
                     if Int(Date().timeIntervalSince1970) - Int(Double(userData.lastDataUpdate[0])!)  > (86400*7) {
                         // If last update was more than a week ago
-                        storageManager.getImages()
-                        
-                        userData.gameImages = storageManager.imageData
+                        storageManager.getImages { (data) in
+                            userData.gameImages = data!
+                        }
                         userData.lastDataUpdate = [String(Date().timeIntervalSince1970)]
                     }
                 }
-                
             }
         }
     }

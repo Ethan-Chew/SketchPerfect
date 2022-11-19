@@ -14,9 +14,9 @@ public class StorageManager: ObservableObject {
     
     @Published var imageData = ImageData(easy: [], medium: [], hard: [])
     
-    func getImages() {
+    func getImages(completion: @escaping (ImageData?) -> ()) {
         let imageTypes = ["easy", "medium", "hard"]
-        
+        // Loops through the different Image Types and list the images inside
         for type in imageTypes {
             let storageRef = storage.reference().child(type)
             
@@ -25,28 +25,55 @@ public class StorageManager: ObservableObject {
                     print("Error in getting files in Type: \(type), with Error: \(error.localizedDescription)")
                 }
                 
-                for item in res!.items {
-                    let imageRef = self.storage.reference(forURL: String(describing: item))
-                    imageRef.getData(maxSize: (1 * 1024 * 1024)) { (data, err) in
-                        if let err = err {
-                            fatalError("An Error Occurred when getting Image: \(err.localizedDescription)")
-                        }
-                        
-                        if let img = data {
-                            switch type {
-                            case "easy":
-                                self.imageData.easy.append(img)
-                            case "medium":
-                                self.imageData.medium.append(img)
-                            case "hard":
-                                self.imageData.hard.append(img)
-                            default:
-                                break
+                if let res = res {
+                    for item in res.items {
+                        let imageRef = self.storage.reference(forURL: String(describing: item)) // Image Reference in the database
+                        imageRef.getData(maxSize: (1 * 1024 * 1024)) { (data, err) in
+                            if let err = err {
+                                fatalError("An error occurred when getting Image of \(item) difficulty: \(err.localizedDescription)")
+                            }
+                            
+                            if data != nil {
+                                if let img = data {
+                                    DispatchQueue.main.async {
+                                        switch type {
+                                        case "easy":
+                                            self.imageData.easy.append(img)
+                                        case "medium":
+                                            self.imageData.medium.append(img)
+                                        case "hard":
+                                            self.imageData.hard.append(img)
+                                        default:
+                                            break
+                                        }
+                                        completion(self.imageData)
+                                    }
+                                }
                             }
                         }
                     }
                 }
-                print(self.imageData)
+//                for item in res!.items {
+//                    let imageRef = self.storage.reference(forURL: String(describing: item))
+//                    imageRef.getData(maxSize: (1 * 1024 * 1024)) { (data, err) in
+//                        if let err = err {
+//                            fatalError("An Error Occurred when getting Image: \(err.localizedDescription)")
+//                        }
+//
+//                        if let img = data {
+//                            switch type {
+//                            case "easy":
+//                                self.imageData.easy.append(img)
+//                            case "medium":
+//                                self.imageData.medium.append(img)
+//                            case "hard":
+//                                self.imageData.hard.append(img)
+//                            default:
+//                                break
+//                            }
+//                        }
+//                    }
+//                }
             }
         }
     }

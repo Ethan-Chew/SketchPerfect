@@ -52,9 +52,6 @@ struct DrawingView: View {
             InfiniteBackgroundView()
             
             ZStack {
-                ZStack {
-                    
-                }
                 // Top Header
                 ZStack(alignment: .top) {
                     VStack {
@@ -76,7 +73,7 @@ struct DrawingView: View {
                     }
                 }
                 
-                // Close Button
+                // Top Buttons
                 VStack {
                     HStack {
                         Spacer()
@@ -272,10 +269,6 @@ struct DrawingView: View {
                 }
             }
             
-            if Int(timeRemaining[0] as! Double) == 0 && cooldownPeriod == gameData.restPeriod {
-                progress = 1.0
-            }
-            
             if Int(timeRemaining[0] as! Double) == 0 {
                 disableDrawing = true
                 if secondaryCooldown != 0 {
@@ -289,10 +282,24 @@ struct DrawingView: View {
                 }
             }
             
-            if cooldownPeriod == 0 {
+            if cooldownPeriod == 0 && progress == 1.0{
                 progress = 1.0
                 roundNumber += 1
+                cooldownPeriod = gameData.restPeriod
+                timeRemaining = [gameData.totalTime/Double(maxRounds)*60.0, "MainGreen"]
                 userData.currentGameData.game.rounds.append(RoundData(image: Data(), percentageAccuracy: ""))
+            }
+            
+            if Int(timeRemaining[0] as! Double) == 0 && cooldownPeriod == gameData.restPeriod {
+                progress = 1.0
+            }
+            
+            // End Game
+            func endGame() {
+                
+            }
+            if roundNumber == getMaxRounds(difficulty: gameData.selectedDifficulty) + 1 {
+                roundNumber = getMaxRounds(difficulty: gameData.selectedDifficulty)
             }
             
             userData.currentGameData.game.rounds[roundNumber - 1].image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!

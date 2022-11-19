@@ -24,6 +24,7 @@ struct DifficultySelectionView: View {
     
     // Variables
     @State var selectedMode: String
+    @State var viewIsActive: Bool = false
     
     var body: some View {
         ZStack {
