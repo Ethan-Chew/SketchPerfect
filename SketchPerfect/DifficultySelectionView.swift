@@ -222,7 +222,7 @@ struct TimeSelectionPopup: View {
     
     // Configuration
     @State var totalTime:Double = 1
-    @State var configMin:Double = 1
+    @State var configMin:Double = 20
     @State var configRest: Double = 10
     @State var restPeriod: Int = 10
     @State var currentGame: SelectedGame
@@ -287,7 +287,7 @@ struct TimeSelectionPopup: View {
                                 totalTime = (configMin*3)/60
                                 totalTime = Double(round(10 * totalTime) / 10)
                             }
-                        Text("Current Duration: \(String(totalTime).contains(".0") ? String(Int(totalTime)) : String(totalTime)) Minute\(totalTime <= 1 ? "" : "s")")
+                        Text("Current Duration: \(String(configMin).contains(".0") ? String(Int(configMin)) : String(configMin)) Second\(configMin <= 1 ? "" : "s")")
                             .font(.system(size: 22))
                     }
                     

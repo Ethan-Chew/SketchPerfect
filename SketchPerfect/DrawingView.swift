@@ -24,6 +24,8 @@ struct DrawingView: View {
     @State var roundNumber = 1
     @State var maxRounds = 0
     @State var timeRemaining: [Any] = [0.0, "MainGreen"]
+    @State private var secondaryCooldown = 2
+    @State var cooldownPeriod = 10
     @State var progress = 1.0
     @State var timer = Timer.publish(every: 1, on: .current, in: .common).autoconnect()
     @State var disableDrawing = false
@@ -141,8 +143,13 @@ struct DrawingView: View {
                         Spacer()
                         
                         ZStack(alignment: .center) {
-                            CircularProgress(colour: timeRemaining[1] as? String ?? "MainGreen", progress: progress)
-                                .frame(maxWidth: frameWidth/4, maxHeight: frameWidth/4+30)
+                            if Int(timeRemaining[0] as! Double) != 0 {
+                                CircularProgress(colour: timeRemaining[1] as? String ?? "MainGreen", progress: progress)
+                                    .frame(maxWidth: frameWidth/4, maxHeight: frameWidth/4+30)
+                            } else {
+                                CircularProgress(colour: "MainYellow", progress: progress)
+                                    .frame(maxWidth: frameWidth/4, maxHeight: frameWidth/4+30)
+                            }
                             VStack(alignment: .center) {
                                 if Int(timeRemaining[0] as! Double) > 0 {
                                     Text(String(Int(timeRemaining[0] as! Double)))
@@ -154,11 +161,21 @@ struct DrawingView: View {
                                         .foregroundColor(Color(timeRemaining[1] as? String ?? "MainGreen"))
                                         .frame(maxWidth: frameWidth/4)
                                         .multilineTextAlignment(.center)
-                                } else {
+                                } else if Int(timeRemaining[0] as! Double) == 0 && cooldownPeriod == gameData.restPeriod {
                                     Text("Times Up!")
                                         .font(.system(size: 27))
                                         .foregroundColor(Color("MainRed"))
                                         .fontWeight(.bold)
+                                        .frame(maxWidth: frameWidth/4)
+                                        .multilineTextAlignment(.center)
+                                } else {
+                                    Text(String(cooldownPeriod))
+                                        .fontWeight(.heavy)
+                                        .font(.system(size: 27))
+                                        .foregroundColor(Color("MainYellow"))
+                                    Text("Seconds before restart")
+                                        .font(.system(size: 20))
+                                        .foregroundColor(Color("MainYellow"))
                                         .frame(maxWidth: frameWidth/4)
                                         .multilineTextAlignment(.center)
                                 }
@@ -198,19 +215,19 @@ struct DrawingView: View {
                                     .bold()
                                     .font(.largeTitle)
                                 
-                                Button {
-                                    print("submit")
-                                } label: {
-                                    Text("Submit")
-                                        .padding(9)
-                                        .padding(.leading, 10)
-                                        .padding(.trailing, 10)
-                                        .background(Color("MainGreen"))
-                                        .foregroundColor(.white)
-                                        .bold()
-                                        .font(.title3)
-                                        .cornerRadius(16)
-                                }
+//                                Button {
+//                                    print("submit")
+//                                } label: {
+//                                    Text("Submit")
+//                                        .padding(9)
+//                                        .padding(.leading, 10)
+//                                        .padding(.trailing, 10)
+//                                        .background(Color("MainGreen"))
+//                                        .foregroundColor(.white)
+//                                        .bold()
+//                                        .font(.title3)
+//                                        .cornerRadius(16)
+//                                }
                             }
                             .padding(.leading, 10)
                             .padding(.top, 10)
@@ -239,9 +256,10 @@ struct DrawingView: View {
             
             // Config Timer
             timeRemaining = [gameData.totalTime/Double(maxRounds)*60.0, "MainGreen"]
+            cooldownPeriod = gameData.restPeriod
         }
         .onReceive(timer) { _ in
-            if timeRemaining.count != 0 && timeRemaining[0] as! Double >= 0.0 {
+            if timeRemaining.count != 0 && timeRemaining[0] as! Double > 0.0 {
                 timeRemaining[0] = (timeRemaining[0] as? Double)! - 1.0
                 let oneSecProgress = 1.0 / (gameData.totalTime/Double(maxRounds)*60.0)
                 withAnimation { progress = progress - oneSecProgress }
@@ -254,8 +272,27 @@ struct DrawingView: View {
                 }
             }
             
+            if Int(timeRemaining[0] as! Double) == 0 && cooldownPeriod == gameData.restPeriod {
+                progress = 1.0
+            }
+            
             if Int(timeRemaining[0] as! Double) == 0 {
                 disableDrawing = true
+                if secondaryCooldown != 0 {
+                    secondaryCooldown -= 1
+                } else {
+                    if cooldownPeriod != 0 {
+                        cooldownPeriod -= 1
+                        let oneSecProgress = 1.0 / Double(gameData.restPeriod)
+                        withAnimation { progress = progress - oneSecProgress }
+                    }
+                }
+            }
+            
+            if cooldownPeriod == 0 {
+                progress = 1.0
+                roundNumber += 1
+                userData.currentGameData.game.rounds.append(RoundData(image: Data(), percentageAccuracy: ""))
             }
             
             userData.currentGameData.game.rounds[roundNumber - 1].image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!

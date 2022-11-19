@@ -11,14 +11,11 @@ import FirebaseStorage
 
 public class StorageManager: ObservableObject {
     let storage = Storage.storage()
-    let userData = UserData()
     
-    var imageData = ImageData(easy: [], medium: [], hard: [])
+    @Published var imageData = ImageData(easy: [], medium: [], hard: [])
     
     func getImages() {
         let imageTypes = ["easy", "medium", "hard"]
-        
-        userData.gameImages = imageData
         
         for type in imageTypes {
             let storageRef = storage.reference().child(type)
@@ -38,17 +35,18 @@ public class StorageManager: ObservableObject {
                         if let img = data {
                             switch type {
                             case "easy":
-                                self.userData.gameImages.easy.append(img)
+                                self.imageData.easy.append(img)
                             case "medium":
-                                self.userData.gameImages.medium.append(img)
+                                self.imageData.medium.append(img)
                             case "hard":
-                                self.userData.gameImages.hard.append(img)
+                                self.imageData.hard.append(img)
                             default:
                                 break
                             }
                         }
                     }
                 }
+                print(self.imageData)
             }
         }
     }
