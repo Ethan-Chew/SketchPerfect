@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EndGameView: View {
+    @Environment(\.isPresented) var isPresented
     let frameWidth: CGFloat
     let frameHeight: CGFloat
     
@@ -18,7 +19,6 @@ struct EndGameView: View {
     // State Variables
     @State var gameData: SelectedGame
 
-    
     var body: some View {
         ZStack {
             InfiniteBackgroundView()
@@ -63,6 +63,11 @@ struct EndGameView: View {
                     Spacer()
                 }
                 .padding(.top, 10)
+                
+                // Main Content
+                VStack {
+                    
+                }
             }
         }
     }

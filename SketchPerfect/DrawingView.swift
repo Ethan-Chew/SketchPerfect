@@ -24,11 +24,12 @@ struct DrawingView: View {
     @State var roundNumber = 1
     @State var maxRounds = 0
     @State var timeRemaining: [Any] = [0.0, "MainGreen"]
-    @State private var secondaryCooldown = 2
+    @State var secondaryCooldown = 2
     @State var cooldownPeriod = 10
     @State var progress = 1.0
     @State var timer = Timer.publish(every: 1, on: .current, in: .common).autoconnect()
     @State var disableDrawing = false
+    @State private var triggerEndGame = false
     func getMaxRounds(difficulty: String) -> Int{
         switch difficulty {
         case "Easy":
@@ -122,17 +123,17 @@ struct DrawingView: View {
                             Image(uiImage: UIImage(data: userData.gameImages.easy[roundNumber - 1])!)
                                 .resizable()
                                 .scaledToFit()
-                                .frame(maxWidth: frameWidth/4, maxHeight: frameWidth/4+30)
+                                .frame(maxWidth: frameWidth/3, maxHeight: frameWidth/4+30)
                         case "Medium":
                             Image(uiImage: UIImage(data: userData.gameImages.medium[roundNumber - 1])!)
                                 .resizable()
                                 .scaledToFit()
-                                .frame(maxWidth: frameWidth/4, maxHeight: frameWidth/4+30)
+                                .frame(maxWidth: frameWidth/3, maxHeight: frameWidth/4+30)
                         case "Hard":
                             Image(uiImage: UIImage(data: userData.gameImages.hard[roundNumber - 1])!)
                                 .resizable()
                                 .scaledToFit()
-                                .frame(maxWidth: frameWidth/4, maxHeight: frameWidth/4+30)
+                                .frame(maxWidth: frameWidth/3, maxHeight: frameWidth/4+30)
                         default:
                             fatalError("Cannot find Selected Difficulty of: \(gameData.selectedDifficulty)")
                         }
@@ -256,53 +257,53 @@ struct DrawingView: View {
             cooldownPeriod = gameData.restPeriod
         }
         .onReceive(timer) { _ in
-            if timeRemaining.count != 0 && timeRemaining[0] as! Double > 0.0 {
-                timeRemaining[0] = (timeRemaining[0] as? Double)! - 1.0
-                let oneSecProgress = 1.0 / (gameData.totalTime/Double(maxRounds)*60.0)
-                withAnimation { progress = progress - oneSecProgress }
-                if progress > 0.5 {
-                    withAnimation { timeRemaining[1] = "MainGreen" }
-                } else if progress > 0.3 {
-                    withAnimation { timeRemaining[1] = "MainYellow" }
-                } else {
-                    withAnimation { timeRemaining[1] = "MainRed" }
-                }
-            }
-            
             if Int(timeRemaining[0] as! Double) == 0 {
                 disableDrawing = true
                 if secondaryCooldown != 0 {
                     secondaryCooldown -= 1
+                    progress = 1.0
                 } else {
                     if cooldownPeriod != 0 {
                         cooldownPeriod -= 1
                         let oneSecProgress = 1.0 / Double(gameData.restPeriod)
                         withAnimation { progress = progress - oneSecProgress }
+                    } else {
+                        // Set up for new round
+                        progress = 1.0
+                        secondaryCooldown = 2
+                        roundNumber += 1
+                        timeRemaining = [gameData.totalTime/Double(maxRounds)*60.0, "MainGreen"]
+                        cooldownPeriod = gameData.restPeriod
+                        userData.currentGameData.game.rounds.append(RoundData(image: Data(), percentageAccuracy: ""))
+                    }
+                }
+            } else {
+                if timeRemaining.count != 0 && timeRemaining[0] as! Double >= 0.0 {
+                    timeRemaining[0] = (timeRemaining[0] as? Double)! - 1.0
+                    let oneSecProgress = 1.0 / (gameData.totalTime/Double(maxRounds)*60.0)
+                    withAnimation { progress = progress - oneSecProgress }
+                    if progress > 0.5 {
+                        withAnimation { timeRemaining[1] = "MainGreen" }
+                    } else if progress > 0.3 {
+                        withAnimation { timeRemaining[1] = "MainYellow" }
+                    } else {
+                        withAnimation { timeRemaining[1] = "MainRed" }
                     }
                 }
             }
             
-            if cooldownPeriod == 0 && progress == 1.0{
-                progress = 1.0
-                roundNumber += 1
-                cooldownPeriod = gameData.restPeriod
-                timeRemaining = [gameData.totalTime/Double(maxRounds)*60.0, "MainGreen"]
-                userData.currentGameData.game.rounds.append(RoundData(image: Data(), percentageAccuracy: ""))
-            }
-            
-            if Int(timeRemaining[0] as! Double) == 0 && cooldownPeriod == gameData.restPeriod {
-                progress = 1.0
-            }
-            
             // End Game
             func endGame() {
-                
+                triggerEndGame = true
             }
             if roundNumber == getMaxRounds(difficulty: gameData.selectedDifficulty) + 1 {
                 roundNumber = getMaxRounds(difficulty: gameData.selectedDifficulty)
             }
             
             userData.currentGameData.game.rounds[roundNumber - 1].image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!
+        }
+        .fullScreenCover(isPresented: $triggerEndGame) {
+            EndGameView(frameWidth: frameWidth, frameHeight: frameHeight, storageManager: storageManager, userData: userData, gameData: gameData)
         }
     }
 }
