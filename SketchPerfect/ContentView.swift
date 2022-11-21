@@ -25,9 +25,13 @@ struct ContentView: View {
     }
     
     // Classes
-    @ObservedObject var userData = UserData()
+    @ObservedObject var appData = AppData()
     @ObservedObject var storageManager = StorageManager()
     
+    // Variables
+    @AppStorage("isFirstOpen") var isFirstOpen = true
+    
+
     var body: some View {
         GeometryReader { geometry in
             let btnWidth = geometry.size.width/2-30
@@ -95,7 +99,7 @@ struct ContentView: View {
                 }
                 
                 VStack {
-                    DifficultySelectionView(presentView: $presentPlayView, frameWidth: geometry.size.width-100, frameHeight: (geometry.size.height/3)*2.7, storageManager: storageManager, userData: userData,selectedMode: "")
+                    DifficultySelectionView(presentView: $presentPlayView, frameWidth: geometry.size.width-100, frameHeight: (geometry.size.height/3)*2.7, storageManager: storageManager, appData: appData,selectedMode: "")
                         .offset(x: playXOffset)
                         .padding(.top, 30)
                     Spacer()
@@ -117,19 +121,24 @@ struct ContentView: View {
             }
             .ignoresSafeArea()
             .onAppear() {
-                if userData.lastDataUpdate == [] {
+                if appData.lastDataUpdate == [] {
                     storageManager.getImages { (data) in
-                        userData.gameImages = data!
+                        appData.gameImages = data!
                     }
-                    userData.lastDataUpdate = [String(Date().timeIntervalSince1970)]
+                    appData.lastDataUpdate = [String(Date().timeIntervalSince1970)]
                 } else {
-                    if Int(Date().timeIntervalSince1970) - Int(Double(userData.lastDataUpdate[0])!)  > (86400*7) {
+                    if Int(Date().timeIntervalSince1970) - Int(Double(appData.lastDataUpdate[0])!)  > (86400*7) {
                         // If last update was more than a week ago
                         storageManager.getImages { (data) in
-                            userData.gameImages = data!
+                            appData.gameImages = data!
                         }
-                        userData.lastDataUpdate = [String(Date().timeIntervalSince1970)]
+                        appData.lastDataUpdate = [String(Date().timeIntervalSince1970)]
                     }
+                }
+                
+                if isFirstOpen {
+                    isFirstOpen = false
+                    appData.userData.gameFirstOpen = Date().timeIntervalSince1970
                 }
             }
         }

@@ -10,7 +10,6 @@
 		591252DC2914BEC50080489E /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591252DB2914BEC50080489E /* DrawingView.swift */; };
 		591252DE2914BEDE0080489E /* DifficultySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591252DD2914BEDE0080489E /* DifficultySelectionView.swift */; };
 		591252E02914BEF40080489E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591252DF2914BEF40080489E /* SettingsView.swift */; };
-		591252E32914BF4A0080489E /* UserStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591252E22914BF4A0080489E /* UserStatistics.swift */; };
 		591252E52914BF680080489E /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591252E42914BF680080489E /* StatisticsView.swift */; };
 		592F39992928886E00CFD0AC /* EndGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 592F39982928886E00CFD0AC /* EndGameView.swift */; };
 		595B314928D76D5F00B3B631 /* SketchPerfectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595B314828D76D5F00B3B631 /* SketchPerfectApp.swift */; };
@@ -24,8 +23,10 @@
 		598A22E229156FDB0036060A /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 598A22E129156FDB0036060A /* FirebaseStorageCombine-Community */; };
 		598A22E42915703F0036060A /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598A22E32915703F0036060A /* ImageData.swift */; };
 		598AF885291A0D1100197410 /* CircularProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598AF884291A0D1100197410 /* CircularProgress.swift */; };
-		59A9941A2915184E003D617D /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A994192915184E003D617D /* UserData.swift */; };
+		59A9941A2915184E003D617D /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A994192915184E003D617D /* AppData.swift */; };
 		59A9941D291518AE003D617D /* SelectedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A9941C291518AE003D617D /* SelectedGame.swift */; };
+		59E4D17D292BD1FE002F3A3C /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E4D17C292BD1FE002F3A3C /* UserData.swift */; };
+		59E4D17F292BD6DE002F3A3C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E4D17E292BD6DE002F3A3C /* Settings.swift */; };
 		59FA1D1D29161C9F00873D74 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 59FA1D1C29161C9F00873D74 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -33,7 +34,6 @@
 		591252DB2914BEC50080489E /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		591252DD2914BEDE0080489E /* DifficultySelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultySelectionView.swift; sourceTree = "<group>"; };
 		591252DF2914BEF40080489E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		591252E22914BF4A0080489E /* UserStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatistics.swift; sourceTree = "<group>"; };
 		591252E42914BF680080489E /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		592F39982928886E00CFD0AC /* EndGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndGameView.swift; sourceTree = "<group>"; };
 		595B314528D76D5F00B3B631 /* SketchPerfect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SketchPerfect.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,8 +47,10 @@
 		598A22DC29156F340036060A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		598A22E32915703F0036060A /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
 		598AF884291A0D1100197410 /* CircularProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgress.swift; sourceTree = "<group>"; };
-		59A994192915184E003D617D /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		59A994192915184E003D617D /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		59A9941C291518AE003D617D /* SelectedGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedGame.swift; sourceTree = "<group>"; };
+		59E4D17C292BD1FE002F3A3C /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		59E4D17E292BD6DE002F3A3C /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		59FA1D1C29161C9F00873D74 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -69,8 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				59FA1D1C29161C9F00873D74 /* GoogleService-Info.plist */,
-				591252E22914BF4A0080489E /* UserStatistics.swift */,
-				59A994192915184E003D617D /* UserData.swift */,
+				59A994192915184E003D617D /* AppData.swift */,
 				598A22DC29156F340036060A /* StorageManager.swift */,
 			);
 			path = Models;
@@ -143,6 +144,8 @@
 			children = (
 				59A9941C291518AE003D617D /* SelectedGame.swift */,
 				598A22E32915703F0036060A /* ImageData.swift */,
+				59E4D17C292BD1FE002F3A3C /* UserData.swift */,
+				59E4D17E292BD6DE002F3A3C /* Settings.swift */,
 			);
 			path = Structs;
 			sourceTree = "<group>";
@@ -179,7 +182,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1340;
-				LastUpgradeCheck = 1340;
+				LastUpgradeCheck = 1400;
 				TargetAttributes = {
 					595B314428D76D5F00B3B631 = {
 						CreatedOnToolsVersion = 13.4.1;
@@ -227,18 +230,19 @@
 			files = (
 				598AF885291A0D1100197410 /* CircularProgress.swift in Sources */,
 				59856CE22914179C00FD7EBC /* InfBackground.swift in Sources */,
+				59E4D17D292BD1FE002F3A3C /* UserData.swift in Sources */,
 				595B314B28D76D5F00B3B631 /* ContentView.swift in Sources */,
 				598A22DD29156F340036060A /* StorageManager.swift in Sources */,
 				592F39992928886E00CFD0AC /* EndGameView.swift in Sources */,
 				595B314928D76D5F00B3B631 /* SketchPerfectApp.swift in Sources */,
-				59A9941A2915184E003D617D /* UserData.swift in Sources */,
+				59A9941A2915184E003D617D /* AppData.swift in Sources */,
 				591252E02914BEF40080489E /* SettingsView.swift in Sources */,
 				5982966A291B60BB00C33552 /* DrawingCanvas.swift in Sources */,
+				59E4D17F292BD6DE002F3A3C /* Settings.swift in Sources */,
 				591252DE2914BEDE0080489E /* DifficultySelectionView.swift in Sources */,
 				59A9941D291518AE003D617D /* SelectedGame.swift in Sources */,
 				591252E52914BF680080489E /* StatisticsView.swift in Sources */,
 				591252DC2914BEC50080489E /* DrawingView.swift in Sources */,
-				591252E32914BF4A0080489E /* UserStatistics.swift in Sources */,
 				598A22E42915703F0036060A /* ImageData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -279,6 +283,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -340,6 +345,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -367,9 +373,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SketchPerfect/SketchPerfect.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"SketchPerfect/Preview Content\"";
 				DEVELOPMENT_TEAM = 46YLK6L3QN;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -400,9 +408,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SketchPerfect/SketchPerfect.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"SketchPerfect/Preview Content\"";
 				DEVELOPMENT_TEAM = 46YLK6L3QN;
 				ENABLE_HARDENED_RUNTIME = YES;

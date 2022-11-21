@@ -20,7 +20,7 @@ struct DifficultySelectionView: View {
     
     // ObservedObject
     @ObservedObject var storageManager: StorageManager
-    @ObservedObject var userData: UserData
+    @ObservedObject var appData: AppData
     
     // Variables
     @State var selectedMode: String
@@ -202,7 +202,7 @@ struct DifficultySelectionView: View {
             
             VStack {
                 Spacer()
-                TimeSelectionPopup(showPopup: $presentChooseTimeView, frameWidth: frameWidth, frameHeight: frameHeight, modeSelected: selectedMode, currentGame: SelectedGame(selectedDifficulty: selectedMode, totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: [])), storageManager: storageManager, userData: userData)
+                TimeSelectionPopup(showPopup: $presentChooseTimeView, frameWidth: frameWidth, frameHeight: frameHeight, modeSelected: selectedMode, currentGame: SelectedGame(selectedDifficulty: selectedMode, totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: [])), storageManager: storageManager, appData: appData)
                     .offset(x: viewXOffset)
                 Spacer()
             }
@@ -230,7 +230,7 @@ struct TimeSelectionPopup: View {
     
     // Observed Objects
     @ObservedObject var storageManager: StorageManager
-    @ObservedObject var userData: UserData
+    @ObservedObject var appData: AppData
     
     // Hide/Show View
     @State var presentDrawingView = false
@@ -318,7 +318,9 @@ struct TimeSelectionPopup: View {
                     Button {
                         currentGame = SelectedGame(selectedDifficulty: modeSelected, totalTime: totalTime, restPeriod: restPeriod, whenSelectedDate: Date(), game: GameData(rounds: []))
                         print(currentGame)
+                        
                         // Start Game
+                        appData.userData.numOfGamesStarted += 1
                         withAnimation { presentDrawingView = true }
                         showPopup = false
                     } label: {
@@ -345,7 +347,7 @@ struct TimeSelectionPopup: View {
         .cornerRadius(20)
         .shadow(radius: 5)
         .fullScreenCover(isPresented: $presentDrawingView) {
-            DrawingView(frameWidth: frameWidth, frameHeight: frameHeight, storageManager: storageManager, userData: userData, gameData: currentGame)
+            DrawingView(frameWidth: frameWidth, frameHeight: frameHeight, storageManager: storageManager, appData: appData, gameData: currentGame)
         }
     }
 }
@@ -354,7 +356,7 @@ struct DSBindingViewPreviewContainer : View {
     @State private var value = false
     
     var body: some View {
-        DifficultySelectionView(presentView: $value, frameWidth: 882, frameHeight: 668, storageManager: StorageManager(), userData: UserData(),selectedMode: "Easy")
+        DifficultySelectionView(presentView: $value, frameWidth: 882, frameHeight: 668, storageManager: StorageManager(), appData: AppData(),selectedMode: "Easy")
 //        TimeSelectionPopup(showPopup: $value,frameWidth: 882 ,frameHeight: 668/2, modeSelected: "Easy", currentGame: SelectedGame(selectedDifficulty: "easy", totalTime: 3.0, whenSelectedDate: Date(), game: GameData(rounds: [])))
     }
 }

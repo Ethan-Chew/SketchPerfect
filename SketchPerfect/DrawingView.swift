@@ -15,7 +15,7 @@ struct DrawingView: View {
     
     // Observed Objects
     @ObservedObject var storageManager: StorageManager
-    @ObservedObject var userData: UserData
+    @ObservedObject var appData: AppData
     
     // Game Info
     let colourChange = ["MainGreen", "MainYellow", "MainRed"]
@@ -120,17 +120,17 @@ struct DrawingView: View {
                         
                         switch gameData.selectedDifficulty {
                         case "Easy":
-                            Image(uiImage: UIImage(data: userData.gameImages.easy[roundNumber - 1])!)
+                            Image(uiImage: UIImage(data: appData.gameImages.easy[roundNumber - 1])!)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(maxWidth: frameWidth/3, maxHeight: frameWidth/4+30)
                         case "Medium":
-                            Image(uiImage: UIImage(data: userData.gameImages.medium[roundNumber - 1])!)
+                            Image(uiImage: UIImage(data: appData.gameImages.medium[roundNumber - 1])!)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(maxWidth: frameWidth/3, maxHeight: frameWidth/4+30)
                         case "Hard":
-                            Image(uiImage: UIImage(data: userData.gameImages.hard[roundNumber - 1])!)
+                            Image(uiImage: UIImage(data: appData.gameImages.hard[roundNumber - 1])!)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(maxWidth: frameWidth/3, maxHeight: frameWidth/4+30)
@@ -183,7 +183,7 @@ struct DrawingView: View {
                         Spacer()
                         
                         // Debug
-//                        if let imageData = UIImage(data: userData.currentGameData.game.rounds[roundNumber - 1].image) {
+//                        if let imageData = UIImage(data: appData.currentGameData.game.rounds[roundNumber - 1].image) {
 //                            Image(uiImage: imageData)
 //                                .resizable()
 //                                .scaledToFit()
@@ -193,7 +193,7 @@ struct DrawingView: View {
                     
                     // Drawing Area
                     ZStack(alignment: .leading) {
-                        DrawingCanvas(canvas: $canvasView, toolPicker: $toolPicker, userData: userData, gameData: gameData, currentRound: roundNumber)
+                        DrawingCanvas(canvas: $canvasView, toolPicker: $toolPicker, appData: appData, gameData: gameData, currentRound: roundNumber)
                             .preferredColorScheme(.light)
                             .foregroundColor(.white)
                             .frame(width: frameWidth, height: frameHeight-(frameWidth/4+30)-20)
@@ -248,9 +248,9 @@ struct DrawingView: View {
             }
             
             // Randomise Game Images
-            userData.gameImages.easy.shuffle()
-            userData.gameImages.medium.shuffle()
-            userData.gameImages.hard.shuffle()
+            appData.gameImages.easy.shuffle()
+            appData.gameImages.medium.shuffle()
+            appData.gameImages.hard.shuffle()
             
             // Config Timer
             timeRemaining = [gameData.totalTime/Double(maxRounds)*60.0, "MainGreen"]
@@ -274,7 +274,9 @@ struct DrawingView: View {
                         roundNumber += 1
                         timeRemaining = [gameData.totalTime/Double(maxRounds)*60.0, "MainGreen"]
                         cooldownPeriod = gameData.restPeriod
-                        userData.currentGameData.game.rounds.append(RoundData(image: Data(), percentageAccuracy: ""))
+                        appData.currentGameData.game.rounds.append(RoundData(image: Data(), percentageAccuracy: ""))
+                        disableDrawing = false
+                        canvasView.drawing = PKDrawing()
                     }
                 }
             } else {
@@ -293,23 +295,22 @@ struct DrawingView: View {
             }
             
             // End Game
-            func endGame() {
-                triggerEndGame = true
-            }
             if roundNumber == getMaxRounds(difficulty: gameData.selectedDifficulty) + 1 {
                 roundNumber = getMaxRounds(difficulty: gameData.selectedDifficulty)
+                triggerEndGame = true
+                appData.userData.numOfGamesCompleted += 1
             }
             
-            userData.currentGameData.game.rounds[roundNumber - 1].image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!
+            appData.currentGameData.game.rounds[roundNumber - 1].image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!
         }
         .fullScreenCover(isPresented: $triggerEndGame) {
-            EndGameView(frameWidth: frameWidth, frameHeight: frameHeight, storageManager: storageManager, userData: userData, gameData: gameData)
+            EndGameView(frameWidth: frameWidth, frameHeight: frameHeight, storageManager: storageManager, appData: appData, gameData: gameData)
         }
     }
 }
 
 struct DrawingView_Previews: PreviewProvider {
     static var previews: some View {
-        DrawingView(frameWidth: 882, frameHeight: 668, storageManager: StorageManager(), userData: UserData(), gameData: SelectedGame(selectedDifficulty: "easy", totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: [])))
+        DrawingView(frameWidth: 882, frameHeight: 668, storageManager: StorageManager(), appData: AppData(), gameData: SelectedGame(selectedDifficulty: "easy", totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: [])))
     }
 }

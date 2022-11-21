@@ -26,7 +26,7 @@ struct DrawingCanvas: UIViewRepresentable {
     @Binding var toolPicker: PKToolPicker
     
     // Game Data
-    @ObservedObject var userData: UserData
+    @ObservedObject var appData: AppData
     var gameData: SelectedGame
     var currentRound: Int
     
@@ -40,6 +40,7 @@ struct DrawingCanvas: UIViewRepresentable {
         #endif
         toolPicker.setVisible(true, forFirstResponder: canvas)
         toolPicker.addObserver(canvas)
+        toolPicker.selectedTool = PKInkingTool(.pen, color: .black, width: 2)
         canvas.becomeFirstResponder()
         
         return canvas

@@ -14,7 +14,7 @@ struct EndGameView: View {
     
     // Observed Objects
     @ObservedObject var storageManager: StorageManager
-    @ObservedObject var userData: UserData
+    @ObservedObject var appData: AppData
     
     // State Variables
     @State var gameData: SelectedGame
@@ -75,6 +75,6 @@ struct EndGameView: View {
 
 struct EndGameView_Previews: PreviewProvider {
     static var previews: some View {
-        EndGameView(frameWidth: 882, frameHeight: 668, storageManager: StorageManager(), userData: UserData(), gameData: SelectedGame(selectedDifficulty: "easy", totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: [])))
+        EndGameView(frameWidth: 882, frameHeight: 668, storageManager: StorageManager(), appData: AppData(), gameData: SelectedGame(selectedDifficulty: "easy", totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: [])))
     }
 }
