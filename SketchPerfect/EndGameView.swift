@@ -22,6 +22,7 @@ struct EndGameView: View {
     var body: some View {
         ZStack {
             InfiniteBackgroundView()
+            
             ZStack {
                 // Top Header
                 ZStack(alignment: .top) {
@@ -31,50 +32,51 @@ struct EndGameView: View {
                             .foregroundColor(Color("LightBlue"))
                         Spacer()
                     }
-                    VStack {
-                        Text("\(gameData.selectedDifficulty) Mode")
-                            .foregroundColor(Color("MainBlue"))
-                            .fontWeight(.heavy)
-                            .font(.system(size: 40))
-                            .padding(.top, 20)
-                    }
+                    Text("Game Over!")
+                        .foregroundColor(Color("MainBlue"))
+                        .fontWeight(.heavy)
+                        .font(.system(size: 55))
+                        .padding(.top, 30)
                 }
                 
-                // Top Buttons
+                // Close Button
                 VStack {
                     HStack {
                         Spacer()
-                        VStack {
-                            Button {
-                                
-                            } label: {
-                                Text("Close")
-                                    .padding(9)
-                                    .padding(.leading, 10)
-                                    .padding(.trailing, 10)
-                                    .background(.red)
-                                    .foregroundColor(.white)
-                                    .bold()
-                                    .font(.title2)
-                                    .cornerRadius(16)
-                            }
-                        }.padding(.trailing,10)
+                        Button {
+
+                        } label: {
+                            Text("Close")
+                                .padding(9)
+                                .padding(.leading, 10)
+                                .padding(.trailing, 10)
+                                .background(.red)
+                                .foregroundColor(.white)
+                                .bold()
+                                .font(.title2)
+                                .cornerRadius(16)
+                        }
+                        .padding(.trailing,10)
                     }
                     Spacer()
                 }
                 .padding(.top, 10)
                 
                 // Main Content
-                VStack {
+                VStack(alignment: .leading, spacing: 20) {
                     
-                }
+                }.offset(y: 120+20)
             }
+            .frame(width: frameWidth, height: frameHeight)
+            .background(.white)
+            .cornerRadius(20)
+            .shadow(radius: 5)
         }
     }
 }
 
 struct EndGameView_Previews: PreviewProvider {
     static var previews: some View {
-        EndGameView(frameWidth: 882, frameHeight: 668, storageManager: StorageManager(), appData: AppData(), gameData: SelectedGame(selectedDifficulty: "easy", totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: [])))
+        EndGameView(frameWidth: 882, frameHeight: 668, storageManager: StorageManager(), appData: AppData(), gameData: SelectedGame(selectedDifficulty: "Easy", totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: [])))
     }
 }

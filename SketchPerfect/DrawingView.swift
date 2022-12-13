@@ -16,6 +16,7 @@ struct DrawingView: View {
     // Observed Objects
     @ObservedObject var storageManager: StorageManager
     @ObservedObject var appData: AppData
+    @ObservedObject var compareImages = CompareImages()
     
     // Game Info
     let colourChange = ["MainGreen", "MainYellow", "MainRed"]
@@ -257,6 +258,8 @@ struct DrawingView: View {
             cooldownPeriod = gameData.restPeriod
         }
         .onReceive(timer) { _ in
+            appData.currentGameData.game.rounds[roundNumber - 1].image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!
+
             if Int(timeRemaining[0] as! Double) == 0 {
                 disableDrawing = true
                 if secondaryCooldown != 0 {
@@ -268,6 +271,44 @@ struct DrawingView: View {
                         let oneSecProgress = 1.0 / Double(gameData.restPeriod)
                         withAnimation { progress = progress - oneSecProgress }
                     } else {
+                        appData.currentGameData.game.rounds[roundNumber - 1].image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!
+
+                        // Compare the Images
+                        let drawnImage: UIImage = UIImage(data: appData.currentGameData.game.rounds[roundNumber - 1].image)!
+                        var currentImage: UIImage
+                        
+                        switch gameData.selectedDifficulty {
+                        case "Easy":
+                            currentImage = UIImage(data: appData.gameImages.easy[roundNumber - 1])!
+                        case "Medium":
+                            currentImage = UIImage(data: appData.gameImages.medium[roundNumber - 1])!
+                        case "Hard":
+                            currentImage = UIImage(data: appData.gameImages.hard[roundNumber - 1])!
+                        default:
+                            fatalError("Cannot find Selected Difficulty of: \(gameData.selectedDifficulty)")
+                        }
+                                                
+                        let croppedDrawnImage: UIImage? = compareImages.cropImage(imageToCrop: drawnImage)
+                        let croppedCurrentImage: UIImage? = compareImages.cropImage(imageToCrop: currentImage)
+                        
+                        /// Check if Cropped Images are nil, if not, compare them using vision
+                        if let croppedDrawnImage = croppedDrawnImage {
+                            if let croppedCurrentImage = croppedCurrentImage {
+                                // Images are not nil
+                                
+                                let distance: Float? = compareImages.compare(origImg: croppedCurrentImage, drawnImg: croppedDrawnImage)
+                                
+//                                print(distance)
+                            } else {
+                                
+                            }
+                        } else {
+                            
+                        }
+                        
+                        print(compareImages.compare(origImg: currentImage, drawnImg: currentImage))
+                        print(compareImages.compare(origImg: currentImage, drawnImg: drawnImage))
+                        
                         // Set up for new round
                         progress = 1.0
                         secondaryCooldown = 2
@@ -300,12 +341,31 @@ struct DrawingView: View {
                 triggerEndGame = true
                 appData.userData.numOfGamesCompleted += 1
             }
-            
-            appData.currentGameData.game.rounds[roundNumber - 1].image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!
         }
         .fullScreenCover(isPresented: $triggerEndGame) {
             EndGameView(frameWidth: frameWidth, frameHeight: frameHeight, storageManager: storageManager, appData: appData, gameData: gameData)
         }
+    }
+}
+
+extension DrawingView {
+    func saveImage(image: UIImage) -> URL? {
+        guard let imageData = image.pngData() else {
+            return nil
+        }
+        let baseURL = FileManager.default.temporaryDirectory
+        let imageURL = baseURL.appendingPathComponent(UUID().uuidString).appendingPathExtension("png")
+        do {
+            try imageData.write(to: imageURL)
+            return imageURL
+        } catch {
+            print("Error saving image to \(imageURL.path): \(error)")
+            return nil
+        }
+    }
+    
+    func deleteImage(url: URL) -> Bool {
+        return true
     }
 }
 
