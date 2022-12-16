@@ -12,10 +12,6 @@ struct SelectedGame: Codable {
     var totalTime: Double
     var restPeriod: Int
     var whenSelectedDate: Date
-    var game: GameData
-}
-
-struct GameData: Codable {
     var rounds: [RoundData]
 }
 

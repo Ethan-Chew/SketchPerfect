@@ -202,7 +202,7 @@ struct DifficultySelectionView: View {
             
             VStack {
                 Spacer()
-                TimeSelectionPopup(showPopup: $presentChooseTimeView, frameWidth: frameWidth, frameHeight: frameHeight, modeSelected: selectedMode, currentGame: SelectedGame(selectedDifficulty: selectedMode, totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: [])), storageManager: storageManager, appData: appData)
+                TimeSelectionPopup(showPopup: $presentChooseTimeView, frameWidth: frameWidth, frameHeight: frameHeight, modeSelected: selectedMode, currentGame: SelectedGame(selectedDifficulty: selectedMode, totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), rounds: []), storageManager: storageManager, appData: appData)
                     .offset(x: viewXOffset)
                 Spacer()
             }
@@ -316,7 +316,7 @@ struct TimeSelectionPopup: View {
                     }
                     
                     Button {
-                        currentGame = SelectedGame(selectedDifficulty: modeSelected, totalTime: totalTime, restPeriod: restPeriod, whenSelectedDate: Date(), game: GameData(rounds: []))
+                        currentGame = SelectedGame(selectedDifficulty: modeSelected, totalTime: totalTime, restPeriod: restPeriod, whenSelectedDate: Date(), rounds: [])
                         print(currentGame)
                         
                         // Start Game

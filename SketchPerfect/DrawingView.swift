@@ -16,7 +16,7 @@ struct DrawingView: View {
     // Observed Objects
     @ObservedObject var storageManager: StorageManager
     @ObservedObject var appData: AppData
-    @ObservedObject var compareImages = CompareImages()
+    var compareImages = CompareImages()
     
     // Game Info
     let colourChange = ["MainGreen", "MainYellow", "MainRed"]
@@ -48,6 +48,20 @@ struct DrawingView: View {
     @State private var canvasView = PKCanvasView()
     @State private var toolPicker = PKToolPicker()
     @State var deleteConfirmation: Bool = false
+    
+    // Code to calculate percentage accuracy
+    fileprivate func calcAccuracy(distance: Float) -> Double {
+        if distance == 0.0 {
+            return 100.0
+        } else {
+            let potAcc = (distance / 24) * 100
+            if potAcc > 100.0 {
+                return 100.0
+            } else {
+                return Double(potAcc)
+            }
+        }
+    }
     
     var body: some View {
         ZStack {
@@ -258,8 +272,11 @@ struct DrawingView: View {
             cooldownPeriod = gameData.restPeriod
         }
         .onReceive(timer) { _ in
-            appData.currentGameData.game.rounds[roundNumber - 1].image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!
-
+            if appData.currentGameData.rounds.count == 0 {
+                appData.currentGameData.rounds.append(RoundData(image: Data(), percentageAccuracy: ""))
+            }
+            
+            print(appData.currentGameData)
             if Int(timeRemaining[0] as! Double) == 0 {
                 disableDrawing = true
                 if secondaryCooldown != 0 {
@@ -271,10 +288,10 @@ struct DrawingView: View {
                         let oneSecProgress = 1.0 / Double(gameData.restPeriod)
                         withAnimation { progress = progress - oneSecProgress }
                     } else {
-                        appData.currentGameData.game.rounds[roundNumber - 1].image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!
+                        appData.currentGameData.rounds[roundNumber - 1].image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!
 
                         // Compare the Images
-                        let drawnImage: UIImage = UIImage(data: appData.currentGameData.game.rounds[roundNumber - 1].image)!
+                        let drawnImage: UIImage = UIImage(data: appData.currentGameData.rounds[roundNumber - 1].image)!
                         var currentImage: UIImage
                         
                         switch gameData.selectedDifficulty {
@@ -288,26 +305,34 @@ struct DrawingView: View {
                             fatalError("Cannot find Selected Difficulty of: \(gameData.selectedDifficulty)")
                         }
                                                 
-                        let croppedDrawnImage: UIImage? = compareImages.cropImage(imageToCrop: drawnImage)
-                        let croppedCurrentImage: UIImage? = compareImages.cropImage(imageToCrop: currentImage)
+//                        let croppedDrawnImage: UIImage? = compareImages.cropImage(imageToCrop: drawnImage)
+//                        let croppedCurrentImage: UIImage? = compareImages.cropImage(imageToCrop: currentImage)
                         
                         /// Check if Cropped Images are nil, if not, compare them using vision
-                        if let croppedDrawnImage = croppedDrawnImage {
-                            if let croppedCurrentImage = croppedCurrentImage {
-                                // Images are not nil
-                                
-                                let distance: Float? = compareImages.compare(origImg: croppedCurrentImage, drawnImg: croppedDrawnImage)
-                                
-//                                print(distance)
-                            } else {
-                                
-                            }
+//                        if let croppedDrawnImage = croppedDrawnImage {
+//                            if let croppedCurrentImage = croppedCurrentImage {
+//                                // Images are not nil
+//
+//                                let distance: Float? = compareImages.compare(origImg: croppedCurrentImage, drawnImg: croppedDrawnImage)
+//
+////                                print(distance)
+//                            } else {
+//
+//                            }
+//                        } else {
+//
+//                        }
+                        var distance: Float = 0.0
+                        
+                        if let dist = compareImages.compare(origImg: currentImage, drawnImg: drawnImage) {
+                            distance = dist
                         } else {
-                            
+                            fatalError("Could not determine Euclidian Distance between images")
                         }
                         
-                        print(compareImages.compare(origImg: currentImage, drawnImg: currentImage))
-                        print(compareImages.compare(origImg: currentImage, drawnImg: drawnImage))
+                        // Add data to round data
+                        appData.currentGameData.rounds[roundNumber - 1].image = drawnImage.pngData()!
+                        appData.currentGameData.rounds[roundNumber - 1].percentageAccuracy = String(calcAccuracy(distance: distance))
                         
                         // Set up for new round
                         progress = 1.0
@@ -315,7 +340,7 @@ struct DrawingView: View {
                         roundNumber += 1
                         timeRemaining = [gameData.totalTime/Double(maxRounds)*60.0, "MainGreen"]
                         cooldownPeriod = gameData.restPeriod
-                        appData.currentGameData.game.rounds.append(RoundData(image: Data(), percentageAccuracy: ""))
+                        appData.currentGameData.rounds.append(RoundData(image: Data(), percentageAccuracy: ""))
                         disableDrawing = false
                         canvasView.drawing = PKDrawing()
                     }
@@ -371,6 +396,6 @@ extension DrawingView {
 
 struct DrawingView_Previews: PreviewProvider {
     static var previews: some View {
-        DrawingView(frameWidth: 882, frameHeight: 668, storageManager: StorageManager(), appData: AppData(), gameData: SelectedGame(selectedDifficulty: "easy", totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: [])))
+        DrawingView(frameWidth: 882, frameHeight: 668, storageManager: StorageManager(), appData: AppData(), gameData: SelectedGame(selectedDifficulty: "easy", totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), rounds: []))
     }
 }
