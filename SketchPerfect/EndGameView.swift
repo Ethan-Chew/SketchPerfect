@@ -64,7 +64,9 @@ struct EndGameView: View {
                 
                 // Main Content
                 VStack(alignment: .leading, spacing: 20) {
-                    
+                    ForEach(gameData.rounds, id: \.self) { round in
+                        RoundStatsView(gameData: gameData, round: round, frameWidth: frameWidth)
+                    }
                 }.offset(y: 120+20)
             }
             .frame(width: frameWidth, height: frameHeight)
@@ -82,9 +84,40 @@ struct EndGameView_Previews: PreviewProvider {
 }
 
 struct RoundStatsView: View {
+    
+    // Variables
+    let gameData: SelectedGame
+    let round: RoundData
+    let frameWidth: CGFloat
+    
     var body: some View {
-        VStack {
-            
+        VStack(alignment: .leading) {
+            Text("Round \(gameData.rounds.firstIndex(of: round)! + 1)")
+                .bold()
+                .font(.largeTitle)
+            HStack {
+                HStack(spacing: 20) {
+                    VStack {
+                        Text("The Image:").bold()
+                        Image(uiImage: UIImage(data: round.shownImage)!)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: (frameWidth-20)/4)
+                    }
+                    
+                    VStack {
+                        Text("You Drew:").bold()
+                        Image(uiImage: UIImage(data: round.drawnImage)!)          
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: (frameWidth-20)/4)
+                    }
+                }
+                VStack {
+                    Text("**Percentage Accuracy:** \(round.percentageAccuracy)%")
+                    Text("**Difficulty:** \(gameData.selectedDifficulty)")
+                }
+            }
         }
     }
 }

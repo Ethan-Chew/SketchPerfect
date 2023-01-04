@@ -15,7 +15,7 @@ struct SelectedGame: Codable {
     var rounds: [RoundData]
 }
 
-struct RoundData: Codable {
+struct RoundData: Codable, Equatable, Hashable {
     var id = UUID()
     var drawnImage: Data
     var shownImage: Data
