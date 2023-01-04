@@ -160,7 +160,7 @@ public class CompareImages {
     func featureprintObservationForImage(image: UIImage) -> VNFeaturePrintObservation? {
         let requestHandler = VNImageRequestHandler(cgImage: image.cgImage!, options: [:])
         let request = VNGenerateImageFeaturePrintRequest()
-//        request.usesCPUOnly = true // Simulator Testing
+        request.usesCPUOnly = true // Simulator Testing
 
         do {
             try requestHandler.perform([request])

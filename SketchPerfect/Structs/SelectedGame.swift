@@ -17,6 +17,7 @@ struct SelectedGame: Codable {
 
 struct RoundData: Codable {
     var id = UUID()
-    var image: Data
+    var drawnImage: Data
+    var shownImage: Data
     var percentageAccuracy: String
 }

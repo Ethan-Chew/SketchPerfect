@@ -273,7 +273,7 @@ struct DrawingView: View {
         }
         .onReceive(timer) { _ in
             if appData.currentGameData.rounds.count == 0 {
-                appData.currentGameData.rounds.append(RoundData(image: Data(), percentageAccuracy: ""))
+                appData.currentGameData.rounds.append(RoundData(drawnImage: Data(), shownImage: Data(), percentageAccuracy: ""))
             }
             
             print(appData.currentGameData)
@@ -288,10 +288,10 @@ struct DrawingView: View {
                         let oneSecProgress = 1.0 / Double(gameData.restPeriod)
                         withAnimation { progress = progress - oneSecProgress }
                     } else {
-                        appData.currentGameData.rounds[roundNumber - 1].image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!
-
+                        appData.currentGameData.rounds[roundNumber - 1].drawnImage = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!
+                        
                         // Compare the Images
-                        let drawnImage: UIImage = UIImage(data: appData.currentGameData.rounds[roundNumber - 1].image)!
+                        let drawnImage: UIImage = UIImage(data: appData.currentGameData.rounds[roundNumber - 1].drawnImage)!
                         var currentImage: UIImage
                         
                         switch gameData.selectedDifficulty {
@@ -304,6 +304,7 @@ struct DrawingView: View {
                         default:
                             fatalError("Cannot find Selected Difficulty of: \(gameData.selectedDifficulty)")
                         }
+                        appData.currentGameData.rounds[roundNumber - 1].shownImage = currentImage.pngData()!
                                                 
 //                        let croppedDrawnImage: UIImage? = compareImages.cropImage(imageToCrop: drawnImage)
 //                        let croppedCurrentImage: UIImage? = compareImages.cropImage(imageToCrop: currentImage)
@@ -331,7 +332,7 @@ struct DrawingView: View {
                         }
                         
                         // Add data to round data
-                        appData.currentGameData.rounds[roundNumber - 1].image = drawnImage.pngData()!
+                        appData.currentGameData.rounds[roundNumber - 1].drawnImage = drawnImage.pngData()!
                         appData.currentGameData.rounds[roundNumber - 1].percentageAccuracy = String(calcAccuracy(distance: distance))
                         
                         // Set up for new round
@@ -340,7 +341,7 @@ struct DrawingView: View {
                         roundNumber += 1
                         timeRemaining = [gameData.totalTime/Double(maxRounds)*60.0, "MainGreen"]
                         cooldownPeriod = gameData.restPeriod
-                        appData.currentGameData.rounds.append(RoundData(image: Data(), percentageAccuracy: ""))
+                        appData.currentGameData.rounds.append(RoundData(drawnImage: Data(), shownImage: Data(), percentageAccuracy: ""))
                         disableDrawing = false
                         canvasView.drawing = PKDrawing()
                     }
@@ -365,6 +366,7 @@ struct DrawingView: View {
                 roundNumber = getMaxRounds(difficulty: gameData.selectedDifficulty)
                 triggerEndGame = true
                 appData.userData.numOfGamesCompleted += 1
+                print(appData.currentGameData)
             }
         }
         .fullScreenCover(isPresented: $triggerEndGame) {
