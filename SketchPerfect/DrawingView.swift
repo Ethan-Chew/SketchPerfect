@@ -198,12 +198,12 @@ struct DrawingView: View {
                         Spacer()
                         
                         // Debug
-//                        if let imageData = UIImage(data: appData.currentGameData.game.rounds[roundNumber - 1].image) {
-//                            Image(uiImage: imageData)
-//                                .resizable()
-//                                .scaledToFit()
-//                                .border(Color.black, width: 2)
-//                        }
+                        //                        if let imageData = UIImage(data: gameData.game.rounds[roundNumber - 1].image) {
+                        //                            Image(uiImage: imageData)
+                        //                                .resizable()
+                        //                                .scaledToFit()
+                        //                                .border(Color.black, width: 2)
+                        //                        }
                     }
                     
                     // Drawing Area
@@ -228,19 +228,19 @@ struct DrawingView: View {
                                     .bold()
                                     .font(.largeTitle)
                                 
-//                                Button {
-//                                    print("submit")
-//                                } label: {
-//                                    Text("Submit")
-//                                        .padding(9)
-//                                        .padding(.leading, 10)
-//                                        .padding(.trailing, 10)
-//                                        .background(Color("MainGreen"))
-//                                        .foregroundColor(.white)
-//                                        .bold()
-//                                        .font(.title3)
-//                                        .cornerRadius(16)
-//                                }
+                                //                                Button {
+                                //                                    print("submit")
+                                //                                } label: {
+                                //                                    Text("Submit")
+                                //                                        .padding(9)
+                                //                                        .padding(.leading, 10)
+                                //                                        .padding(.trailing, 10)
+                                //                                        .background(Color("MainGreen"))
+                                //                                        .foregroundColor(.white)
+                                //                                        .bold()
+                                //                                        .font(.title3)
+                                //                                        .cornerRadius(16)
+                                //                                }
                             }
                             .padding(.leading, 10)
                             .padding(.top, 10)
@@ -272,84 +272,65 @@ struct DrawingView: View {
             cooldownPeriod = gameData.restPeriod
         }
         .onReceive(timer) { _ in
-            if appData.currentGameData.rounds.count == 0 {
-                appData.currentGameData.rounds.append(RoundData(drawnImage: Data(), shownImage: Data(), percentageAccuracy: ""))
+            if gameData.rounds.count == 0 { // Init Data for the First Round
+                gameData.rounds.append(RoundData(drawnImage: Data(), shownImage: Data(), percentageAccuracy: ""))
             }
             
-            print(appData.currentGameData)
-            if Int(timeRemaining[0] as! Double) == 0 {
-                disableDrawing = true
-                if secondaryCooldown != 0 {
-                    secondaryCooldown -= 1
-                    progress = 1.0
-                } else {
-                    if cooldownPeriod != 0 {
-                        cooldownPeriod -= 1
-                        let oneSecProgress = 1.0 / Double(gameData.restPeriod)
-                        withAnimation { progress = progress - oneSecProgress }
+            if maxRounds == gameData.rounds.count + 1 { // Ensures that the current round is not equal to the max rounds
+                if Int(timeRemaining[0] as! Double) == 0 { // Times up for the current round
+                    disableDrawing = true
+                    if secondaryCooldown != 0 { // Ensures that the cool down period is not over
+                        secondaryCooldown -= 1
+                        progress = 1.0
                     } else {
-                        appData.currentGameData.rounds[roundNumber - 1].drawnImage = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light).pngData()!
+                        // Cooldown is over as well
+                        /// Compare Images, Data Management and Set-Up for a new round
+                        let drawnImage: UIImage = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0, userInterfaceStyle: .light) // Set the drawn image to the image on the canvas
+                        var shownImage: UIImage
                         
-                        // Compare the Images
-                        let drawnImage: UIImage = UIImage(data: appData.currentGameData.rounds[roundNumber - 1].drawnImage)!
-                        var currentImage: UIImage
-                        
-                        switch gameData.selectedDifficulty {
+                        switch gameData.selectedDifficulty { // Set the Shown image
                         case "Easy":
-                            currentImage = UIImage(data: appData.gameImages.easy[roundNumber - 1])!
+                            shownImage = UIImage(data: appData.gameImages.easy[roundNumber - 1])!
                         case "Medium":
-                            currentImage = UIImage(data: appData.gameImages.medium[roundNumber - 1])!
+                            shownImage = UIImage(data: appData.gameImages.medium[roundNumber - 1])!
                         case "Hard":
-                            currentImage = UIImage(data: appData.gameImages.hard[roundNumber - 1])!
+                            shownImage = UIImage(data: appData.gameImages.hard[roundNumber - 1])!
                         default:
                             fatalError("Cannot find Selected Difficulty of: \(gameData.selectedDifficulty)")
                         }
-                        appData.currentGameData.rounds[roundNumber - 1].shownImage = currentImage.pngData()!
-                                                
-//                        let croppedDrawnImage: UIImage? = compareImages.cropImage(imageToCrop: drawnImage)
-//                        let croppedCurrentImage: UIImage? = compareImages.cropImage(imageToCrop: currentImage)
                         
-                        /// Check if Cropped Images are nil, if not, compare them using vision
-//                        if let croppedDrawnImage = croppedDrawnImage {
-//                            if let croppedCurrentImage = croppedCurrentImage {
-//                                // Images are not nil
-//
-//                                let distance: Float? = compareImages.compare(origImg: croppedCurrentImage, drawnImg: croppedDrawnImage)
-//
-////                                print(distance)
-//                            } else {
-//
-//                            }
-//                        } else {
-//
-//                        }
+                        // Add the Images to Struct
+                        gameData.rounds[roundNumber - 1].drawnImage = drawnImage.pngData()!
+                        gameData.rounds[roundNumber - 1].shownImage = shownImage.pngData()!
+                        
+                        // Compare the Images
                         var distance: Float = 0.0
                         
-                        if let dist = compareImages.compare(origImg: currentImage, drawnImg: drawnImage) {
+                        if let dist = compareImages.compare(origImg: shownImage, drawnImg: drawnImage) {
                             distance = dist
                         } else {
-                            fatalError("Could not determine Euclidian Distance between images")
+                            fatalError("Error while comparing images")
                         }
                         
-                        // Add data to round data
-                        appData.currentGameData.rounds[roundNumber - 1].drawnImage = drawnImage.pngData()!
-                        appData.currentGameData.rounds[roundNumber - 1].percentageAccuracy = String(calcAccuracy(distance: distance))
+                        gameData.rounds[roundNumber - 1].percentageAccuracy = String(calcAccuracy(distance: distance)) // Save the Calculated Percentage Value to the Struct
                         
-                        // Set up for new round
-                        progress = 1.0
-                        secondaryCooldown = 2
                         roundNumber += 1
-                        timeRemaining = [gameData.totalTime/Double(maxRounds)*60.0, "MainGreen"]
-                        cooldownPeriod = gameData.restPeriod
-                        appData.currentGameData.rounds.append(RoundData(drawnImage: Data(), shownImage: Data(), percentageAccuracy: ""))
-                        disableDrawing = false
-                        canvasView.drawing = PKDrawing()
+                        // Set up the game for a new round
+                        if roundNumber != maxRounds {
+                            progress = 1.0
+                            secondaryCooldown = 2
+                            timeRemaining = [gameData.totalTime/Double(maxRounds)*60.0, "MainGreen"]
+                            cooldownPeriod = gameData.restPeriod
+                            gameData.rounds.append(RoundData(drawnImage: Data(), shownImage: Data(), percentageAccuracy: ""))
+                            canvasView.drawing = PKDrawing()
+                            disableDrawing = false
+                        }
                     }
-                }
-            } else {
-                if timeRemaining.count != 0 && timeRemaining[0] as! Double >= 0.0 {
+                } else {
+                    // If not times up, continue to decrease the timer
                     timeRemaining[0] = (timeRemaining[0] as? Double)! - 1.0
                     let oneSecProgress = 1.0 / (gameData.totalTime/Double(maxRounds)*60.0)
+                    
                     withAnimation { progress = progress - oneSecProgress }
                     if progress > 0.5 {
                         withAnimation { timeRemaining[1] = "MainGreen" }
@@ -366,7 +347,6 @@ struct DrawingView: View {
                 roundNumber = getMaxRounds(difficulty: gameData.selectedDifficulty)
                 triggerEndGame = true
                 appData.userData.numOfGamesCompleted += 1
-                print(appData.currentGameData)
             }
         }
         .fullScreenCover(isPresented: $triggerEndGame) {

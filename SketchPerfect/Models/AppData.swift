@@ -11,14 +11,6 @@ class AppData: ObservableObject {
     let userDefaults = UserDefaults.standard
     let encoder = JSONEncoder()
     
-    // Data of the Current Game
-    @Published var currentGameData: SelectedGame {
-        didSet {
-            let data = try? encoder.encode(currentGameData)
-            userDefaults.set(data, forKey: "currentGameData")
-        }
-    }
-    
     // Image Data
     @Published var gameImages: ImageData {
         didSet {
@@ -52,15 +44,6 @@ class AppData: ObservableObject {
     
     init() {
         let decoder = JSONDecoder()
-        
-        // Current Game Data
-        let currentGameDat = userDefaults.object(forKey: "currentGameData")
-        if let currentGameDat = currentGameDat {
-            let gameData = try? decoder.decode(SelectedGame.self, from: currentGameDat as! Data)
-            self.currentGameData = gameData ?? SelectedGame(selectedDifficulty: "", totalTime: 0.0, restPeriod: 10, whenSelectedDate: Date(), rounds: [])
-        } else {
-            self.currentGameData = SelectedGame(selectedDifficulty: "", totalTime: 0.0, restPeriod: 10, whenSelectedDate: Date(), rounds: [])
-        }
         
         // Image Data
         let rawGameImg = userDefaults.object(forKey: "gameImages") as? Data

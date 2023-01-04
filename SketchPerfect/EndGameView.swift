@@ -63,11 +63,18 @@ struct EndGameView: View {
                 .padding(.top, 10)
                 
                 // Main Content
-                VStack(alignment: .leading, spacing: 20) {
+//                VStack(alignment: .leading, spacing: 20) {
+//                    ForEach(gameData.rounds, id: \.self) { round in
+////                        RoundStatsView(gameData: gameData, round: round, frameWidth: frameWidth)
+////                        Image(uiImage: UIImage(data: round.drawnImage)!)
+//                        Text("Hello")
+//                    }
+//                }.offset(y: 120+20)
+                VStack {
                     ForEach(gameData.rounds, id: \.self) { round in
                         RoundStatsView(gameData: gameData, round: round, frameWidth: frameWidth)
                     }
-                }.offset(y: 120+20)
+                }
             }
             .frame(width: frameWidth, height: frameHeight)
             .background(.white)

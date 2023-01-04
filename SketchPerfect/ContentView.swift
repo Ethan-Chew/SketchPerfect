@@ -140,6 +140,8 @@ struct ContentView: View {
                     isFirstOpen = false
                     appData.userData.gameFirstOpen = Date().timeIntervalSince1970
                 }
+                
+                
             }
         }
     }

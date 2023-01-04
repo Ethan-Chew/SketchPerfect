@@ -317,7 +317,6 @@ struct TimeSelectionPopup: View {
                     
                     Button {
                         currentGame = SelectedGame(selectedDifficulty: modeSelected, totalTime: totalTime, restPeriod: restPeriod, whenSelectedDate: Date(), rounds: [])
-                        print(currentGame)
                         
                         // Start Game
                         appData.userData.numOfGamesStarted += 1
