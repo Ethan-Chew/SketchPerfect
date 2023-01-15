@@ -96,6 +96,7 @@ struct InfiniteBackgroundView: View {
                 }
                 .offset(x: 20, y: yOffset)
             }
+            .ignoresSafeArea()
             .disabled(true)
             .onAppear() {
                 withAnimation(.linear(duration: 35).repeatForever(autoreverses: false)) {

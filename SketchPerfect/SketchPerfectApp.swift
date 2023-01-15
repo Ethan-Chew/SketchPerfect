@@ -25,6 +25,7 @@ struct SketchPerfectApp: App {
         WindowGroup {
             ContentView()
                 .preferredColorScheme(.light)
+                .ignoresSafeArea()
 //            EndGameView(frameWidth: 882, frameHeight: 668, storageManager: StorageManager(), appData: AppData(), gameData: SelectedGame(selectedDifficulty: "Easy", totalTime: 3.0, restPeriod: 10, whenSelectedDate: Date(), game: GameData(rounds: [])))
         }
     }

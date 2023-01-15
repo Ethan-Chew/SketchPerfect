@@ -63,13 +63,6 @@ struct EndGameView: View {
                 .padding(.top, 10)
                 
                 // Main Content
-//                VStack(alignment: .leading, spacing: 20) {
-//                    ForEach(gameData.rounds, id: \.self) { round in
-////                        RoundStatsView(gameData: gameData, round: round, frameWidth: frameWidth)
-////                        Image(uiImage: UIImage(data: round.drawnImage)!)
-//                        Text("Hello")
-//                    }
-//                }.offset(y: 120+20)
                 VStack {
                     ForEach(gameData.rounds, id: \.self) { round in
                         RoundStatsView(gameData: gameData, round: round, frameWidth: frameWidth)
@@ -105,7 +98,9 @@ struct RoundStatsView: View {
             HStack {
                 HStack(spacing: 20) {
                     VStack {
-                        Text("The Image:").bold()
+                        Text("The Image:")
+                            .font(.title)
+                            .bold()
                         Image(uiImage: UIImage(data: round.shownImage)!)
                             .resizable()
                             .scaledToFit()
@@ -113,7 +108,9 @@ struct RoundStatsView: View {
                     }
                     
                     VStack {
-                        Text("You Drew:").bold()
+                        Text("You Drew:")
+                            .font(.title)
+                            .bold()
                         Image(uiImage: UIImage(data: round.drawnImage)!)          
                             .resizable()
                             .scaledToFit()
@@ -122,9 +119,14 @@ struct RoundStatsView: View {
                 }
                 VStack {
                     Text("**Percentage Accuracy:** \(round.percentageAccuracy)%")
+                        .font(.largeTitle)
                     Text("**Difficulty:** \(gameData.selectedDifficulty)")
+                        .font(.largeTitle)
                 }
             }
         }
+        .padding()
+        .cornerRadius(8)
+        .shadow(radius: 6)
     }
 }
